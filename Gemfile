@@ -1,3 +1,4 @@
+ruby "2.0.0"
 source 'https://rubygems.org'
 gem 'rails', '3.2.13'
 group :assets do
@@ -6,7 +7,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 gem 'jquery-rails'
-gem "unicorn", ">= 4.3.1", :group => [:development, :test]
+gem "unicorn", ">= 4.3.1"
 gem "pg", ">= 0.15.0"
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "database_cleaner", ">= 1.0.0.RC1", :group => :test
