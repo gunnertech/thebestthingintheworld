@@ -1,0 +1,29 @@
+<%- model_class = Thing -%>
+<div class="page-header">
+  <h1>Recent Activity</h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Thing</th>
+      <th>Change</th>
+      <th>By</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% collection.each do |version| %>
+      <% thing = YAML::load(version.object) rescue nil %>
+      <% if thing %>
+        <tr>
+          <td><%= link_to thing["name"], thing_path(thing["id"]) %></td>
+          <td class="text">
+            Moved up to #<%= thing['position'].to_i - 1 %> at <time class="convert"><%=l version.created_at %></time>
+          </td>
+          <td><%= User.where{ id == my{version.whodunnit} }.first.try(:to_s) || 'Anonymous' %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate collection %>

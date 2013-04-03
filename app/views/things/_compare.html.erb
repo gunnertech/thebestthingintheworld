@@ -7,13 +7,13 @@
           <div class="caption">
             <h3>
               <span class="badge badge-info">#<%= thing.position %></span>
-              <%= thing.name %>
+              <%= link_to thing.name, thing %>
             </h3>
             <p>
               <% if thing.position == 1 %>
                 <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_thing_path(thing, page: params[:page]), method: "put", class: 'btn btn-primary disabled' %>
               <% else %>
-                <%= link_to "<span class=\"icon icon-trophy\"></span> This is Better".html_safe, move_up_thing_path(thing, page: params[:page]), method: "put", class: 'btn btn-primary' %>
+                <%= link_to "<span class=\"icon icon-trophy\"></span> Move Up".html_safe, move_up_thing_path(thing, page: params[:page]), method: "put", class: 'btn btn-primary' %>
               <% end %>
             </p>
           </div>

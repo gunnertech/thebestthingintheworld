@@ -9,6 +9,10 @@ class ThingsController < InheritedResources::Base
     redirect_to things_comparision_url(page: params[:page])
   end
   
+  def create
+    create!{ things_comparision_url }
+  end
+  
   protected
   
   def per_page
@@ -21,6 +25,7 @@ class ThingsController < InheritedResources::Base
     @things = end_of_association_chain.accessible_by(current_ability).paginate(page: params[:page], :per_page => per_page)
     
     #@things = @things.limit(2) if params[:view] == 'compare'
+    @things = @things.reorder{ position.desc } if params[:view] == 'compare'
     
     @things
   end
