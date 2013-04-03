@@ -1,0 +1,20 @@
+<div class="row-fluid">
+  <ul class="thumbnails">
+    <% collection.each do |thing| %>
+      <li class="span6">
+        <div class="thumbnail">
+          <img src="<%= dummy_image_src %>">
+          <div class="caption">
+            <h3>
+              <span class="badge badge-info">#<%= thing.position %></span>
+              <%= thing.name %>
+            </h3>
+            <p>
+              <%= link_to "Move Up", move_up_thing_path(thing, page: params[:page]), method: "put", class: thing.position == 1 ? 'btn btn-primary disabled' : 'btn btn-primary' %>
+            </p>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

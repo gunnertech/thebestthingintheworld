@@ -1,0 +1,31 @@
+<%- model_class = Thing -%>
+<div class="page-header">
+  <h1>Leader Board</h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @things.each do |thing| %>
+      <tr>
+        <td><%= link_to thing.position, thing %></td>
+        <td><%= link_to thing.name, thing %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_thing_path(thing), :class => 'btn btn-mini' if can? :update, thing %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      thing_path(thing),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' if can? :destroy, thing %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate collection %>
