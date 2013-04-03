@@ -10,9 +10,10 @@ Thebestthingintheworld::Application.routes.draw do
 
 
   authenticated :user do
-    root :to => 'home#index'
+    root :to => 'things#index', view: 'compare'
   end
-  root :to => "home#index"
+  root :to => "things#index", view: 'compare'
+  
   devise_for :users
   resources :users
 end

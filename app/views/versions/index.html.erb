@@ -17,7 +17,7 @@
         <tr>
           <td><%= link_to thing["name"], thing_path(thing["id"]) %></td>
           <td class="text">
-            Moved up to #<%= thing['position'].to_i - 1 %> at <time class="convert"><%=l version.created_at %></time>
+            Moved up to #<%= thing['position'].to_i %> at <time class="convert"><%=l version.created_at %></time>
           </td>
           <td><%= User.where{ id == my{version.whodunnit} }.first.try(:to_s) || 'Anonymous' %></td>
         </tr>

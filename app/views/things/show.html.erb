@@ -21,7 +21,7 @@
       <% thing = YAML::load(version.object) rescue nil %>
       <% if thing %>
         <tr>
-          <td class="count"><%= thing['position'].to_i - 1 %></td>
+          <td class="count"><%= thing['position'].to_i %></td>
           <td><%= User.where{ id == my{version.whodunnit} }.first.try(:to_s) || 'Anonymous' %></td>
           <td><time class="convert"><%=l version.created_at %></time></td>
         </tr>
