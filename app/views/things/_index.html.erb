@@ -2,9 +2,30 @@
 <div class="page-header">
   <h1>Leader Board</h1>
 </div>
-<table class="table table-striped">
+
+<% @things.each do |thing| %>
+  <div class="row-fluid">
+    <div class="alert alert-block clearfix">
+      <div class="span1"><%= link_to(image_tag(thing.image.url(:small)), thing) %></div>
+      <div class="span5"><h3><%= link_to "##{thing.position}", thing %> - <%= link_to thing.name, thing %></h3></div>
+      <div class="span6">
+        <h3>
+        <% if thing.position == 1 %>
+          <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_thing_path(thing, page: params[:page]), method: "put", class: 'btn btn-primary disabled' %>
+        <% else %>
+          <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_thing_path(thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
+        <% end %>
+        </h3>
+      </div>
+      <!-- Best check yo self, you're not... -->
+    </div>
+  </div>
+<% end %>
+
+<!-- <table class="table table-striped">
   <thead>
     <tr>
+      <th></th>
       <th>Rank</th>
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th></th>
@@ -13,6 +34,7 @@
   <tbody>
     <% @things.each do |thing| %>
       <tr>
+        <td><%= link_to(image_tag(thing.image.url(:small)), thing) %></td>
         <td><%= link_to thing.position, thing %></td>
         <td><%= link_to thing.name, thing %></td>
         <td>
@@ -26,6 +48,6 @@
       </tr>
     <% end %>
   </tbody>
-</table>
+</table> -->
 
 <%= will_paginate collection %>

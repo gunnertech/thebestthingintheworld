@@ -1,0 +1,3 @@
+paperclip:
+  url: ':s3_domain_url'
+  s3_host_alias: ""

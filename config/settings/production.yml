@@ -1,0 +1,7 @@
+# paperclip:
+#   url: ':s3_alias_url'
+#   s3_host_alias: "d2alwlc7xpnlvk.cloudfront.net"
+
+paperclip:
+  url: ':s3_domain_url'
+  s3_host_alias: ""

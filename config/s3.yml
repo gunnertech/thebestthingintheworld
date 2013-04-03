@@ -1,0 +1,19 @@
+common: &common
+  access_key_id: 'AKIAJLZSJ7DLDBAIC3QA'
+  secret_access_key: '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'
+
+development:
+  <<: *common
+  bucket: 'com.gunnertech.development.thebestthingintheworld'
+
+test:
+  <<: *common
+  bucket: 'com.gunnertech.test.thebestthingintheworld'
+
+staging:
+  <<: *common
+  bucket: 'com.gunnertech.staging.thebestthingintheworld'
+
+production:
+  <<: *common
+  bucket: 'com.gunnertech.production.thebestthingintheworld'

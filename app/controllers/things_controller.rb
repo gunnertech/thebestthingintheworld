@@ -6,7 +6,8 @@ class ThingsController < InheritedResources::Base
   def move_up
     authorize! :move_up, resource
     resource.move_higher
-    redirect_to things_comparision_url(page: params[:page])
+    flash[:notice] = "You moved that thing up! Good for you!"
+    redirect_to params[:return_to].present? ? params[:return_to] : things_comparision_url(page: params[:page])
   end
   
   def create
