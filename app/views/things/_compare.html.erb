@@ -10,7 +10,11 @@
               <%= thing.name %>
             </h3>
             <p>
-              <%= link_to "Move Up", move_up_thing_path(thing, page: params[:page]), method: "put", class: thing.position == 1 ? 'btn btn-primary disabled' : 'btn btn-primary' %>
+              <% if thing.position == 1 %>
+                <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_thing_path(thing, page: params[:page]), method: "put", class: 'btn btn-primary disabled' %>
+              <% else %>
+                <%= link_to "<span class=\"icon icon-trophy\"></span> This is Better".html_safe, move_up_thing_path(thing, page: params[:page]), method: "put", class: 'btn btn-primary' %>
+              <% end %>
             </p>
           </div>
         </div>
