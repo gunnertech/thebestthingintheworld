@@ -6,7 +6,7 @@ class ThingsController < InheritedResources::Base
   def move_up
     authorize! :move_up, resource
     resource.move_higher
-    redirect_to things_comparision_url(page: (params[:page].to_i + 1).to_s)
+    redirect_to things_comparision_url(page: params[:page])
   end
   
   protected
