@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
       group.each do |thing|
         at = AssignedThing.new(user: self, thing: thing)
         at.position = thing.average_position.to_i
+        at.save
       end
     end
   end
