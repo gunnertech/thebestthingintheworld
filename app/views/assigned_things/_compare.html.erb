@@ -41,7 +41,7 @@
               <% if assigned_thing.position == 1 %>
                 <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
               <% else %>
-                <%= link_to "Next <span class=\"icon icon-arrow-right\"></span> ".html_safe, things_comparision_path(page: (params[:page].to_i + 1).to_s), class: 'btn btn-warning' %>
+                <%= link_to "Next <span class=\"icon icon-arrow-right\"></span> ".html_safe, user_assigned_things_path("me",page: (params[:page].to_i + 1).to_s), class: 'btn btn-warning' %>
               <% end %>
             </h3>
           </div>
