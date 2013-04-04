@@ -1,1 +1,1 @@
-rvm use 2.0.0@thebestthingintheworld
+rvm use 2.0.0@thebestthingintheworld --create
