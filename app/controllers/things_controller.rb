@@ -3,6 +3,8 @@ class ThingsController < InheritedResources::Base
   
   skip_load_and_authorize_resource only: [:move_up,:index]
   
+  before_filter :set_page, only: [:index]
+  
   def move_up
     authorize! :move_up, resource
     resource.move_higher
@@ -34,6 +36,10 @@ class ThingsController < InheritedResources::Base
     @things = @things.reorder{ position.desc } if params[:view] == 'compare'
     
     @things
+  end
+  
+  def set_page
+    params[:page] = params[:page].present? ? params[:page] : "1"
   end
   
 end
