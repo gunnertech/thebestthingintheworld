@@ -9,16 +9,9 @@
         <div class="thumbnail">
           <%= image_tag thing.image.url %>
           <div class="caption clearfix">
-            <h3 class="pull-left">
+            <h3>
               <span class="badge badge-info">#<%= thing.position %></span>
               <%= link_to thing.name, thing %>
-            </h3>
-            <h3 class="pull-right">
-              <% if thing.position == 1 %>
-                <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_thing_path(thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
-              <% else %>
-                <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_thing_path(thing, page: (params[:page].to_i + 1).to_s), method: "put", class: 'btn btn-primary' %>
-              <% end %>
             </h3>
           </div>
         </div>
@@ -30,16 +23,9 @@
         <div class="thumbnail">
           <%= image_tag thing.image.url %>
           <div class="caption clearfix">
-            <h3 class="pull-left">
+            <h3>
               <span class="badge badge-info">#<%= thing.position %></span>
               <%= link_to thing.name, thing %>
-            </h3>
-            <h3 class="pull-right">
-              <% if thing.position == 1 %>
-                <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_thing_path(thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
-              <% else %>
-                <%= link_to "Next <span class=\"icon icon-arrow-right\"></span> ".html_safe, things_comparision_path(page: (params[:page].to_i + 1).to_s), class: 'btn btn-warning' %>
-              <% end %>
             </h3>
           </div>
         </div>

@@ -39,3 +39,4 @@ gem 'paper_trail', '~> 2'
 gem 'aws-sdk', '~> 1.3.4'
 gem 'rails_config'
 gem "paperclip", "~> 3.0"
+gem 'delayed_job_active_record'

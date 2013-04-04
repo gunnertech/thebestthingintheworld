@@ -1,53 +1,24 @@
 <%- model_class = Thing -%>
+<div class="alert alert-error">
+  <strong>The Fight for Best!</strong>. You're looking at the Internet's only ranking of any<strong>thing</strong> and every<strong>thing</strong>. The leaderboard is built based from the community's <%= link_to "comparisons", user_assigned_things_comparision_path("me") %>.
+</div>
+
 <div class="page-header">
-  <h1>Leader Board</h1>
+  <h1>Leaderboard</h1>
 </div>
 
 <% @things.each do |thing| %>
   <div class="row-fluid">
     <div class="alert alert-block clearfix">
       <div class="span1"><%= link_to(image_tag(thing.image.url(:small)), thing) %></div>
-      <div class="span5"><h3><%= link_to "##{thing.position}", thing %> - <%= link_to thing.name, thing %></h3></div>
-      <div class="span6">
-        <h3>
-        <% if thing.position == 1 %>
-          <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_thing_path(thing, page: params[:page]), method: "put", class: 'btn btn-primary disabled' %>
-        <% else %>
-          <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_thing_path(thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
-        <% end %>
-        </h3>
+      <div class="span11">
+        <h4>
+          <%= link_to thing.name, thing %>
+        </h4>
+        <small><span class="label label-inverse">Average Ranking: <%= thing.average_position %></span></small>
       </div>
-      <!-- Best check yo self, you're not... -->
     </div>
   </div>
 <% end %>
-
-<!-- <table class="table table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Rank</th>
-      <th><%= model_class.human_attribute_name(:name) %></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @things.each do |thing| %>
-      <tr>
-        <td><%= link_to(image_tag(thing.image.url(:small)), thing) %></td>
-        <td><%= link_to thing.position, thing %></td>
-        <td><%= link_to thing.name, thing %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_thing_path(thing), :class => 'btn btn-mini' if can? :update, thing %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      thing_path(thing),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' if can? :destroy, thing %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table> -->
 
 <%= will_paginate collection %>

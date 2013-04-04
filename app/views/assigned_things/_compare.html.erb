@@ -1,0 +1,54 @@
+<div class="alert alert-error alert-block">
+  <h4>It's Simple!</h4>
+  <p>If you think the first thing is better than the second, click "Move Up." If not, click "Next" to see the next comparison.</p>
+  <p>Rearrange the things until they're ordered from your least favorite to most favorite. Each time you move something, you affect <%= link_to "your leaderboard", user_assigned_things_path("me") %> and the <%= link_to "Overall Leaderboard", things_url %>.</p>
+  <p>Are we missing something? <strong><%= link_to "Add it!", new_thing_path %></strong></p>
+</div>
+
+<div class="row-fluid">
+  <ul class="thumbnails">
+    <% collection.each do |assigned_thing| %>
+      <li class="span6">
+        <div class="thumbnail">
+          <%= image_tag assigned_thing.thing.image.url %>
+          <div class="caption clearfix">
+            <h3 class="pull-left">
+              <span class="badge badge-info">#<%= assigned_thing.position %></span>
+              <%= link_to assigned_thing.thing.name, assigned_thing.thing %>
+            </h3>
+            <h3 class="pull-right">
+              <% if assigned_thing.position == 1 %>
+                <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
+              <% else %>
+                <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: (params[:page].to_i + 1).to_s), method: "put", class: 'btn btn-primary' %>
+              <% end %>
+            </h3>
+          </div>
+        </div>
+      </li>
+    <% end %>
+    
+    <% parent.assigned_things.where{ position == my{ collection.last.position - 1} }.each do |assigned_thing| %>
+      <li class="span6">
+        <div class="thumbnail">
+          <%= image_tag assigned_thing.thing.image.url %>
+          <div class="caption clearfix">
+            <h3 class="pull-left">
+              <span class="badge badge-info">#<%= assigned_thing.position %></span>
+              <%= link_to assigned_thing.thing.name, assigned_thing.thing %>
+            </h3>
+            <h3 class="pull-right">
+              <% if assigned_thing.position == 1 %>
+                <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
+              <% else %>
+                <%= link_to "Next <span class=\"icon icon-arrow-right\"></span> ".html_safe, things_comparision_path(page: (params[:page].to_i + 1).to_s), class: 'btn btn-warning' %>
+              <% end %>
+            </h3>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<%= will_paginate collection %>

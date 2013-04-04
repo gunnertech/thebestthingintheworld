@@ -1,8 +1,17 @@
-<h2>Sign in</h2>
-<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-vertical' }) do |f| %>
+<div class="alert alert-error">
+  <strong>Almost There!</strong>. Before you can start comparing things, you have to sign in. If you don't have an account, just <strong><%= link_to "Click Here", new_user_registration_path %></strong>. It only takes a second, and don't worry, we're not giving out your email.
+</div>
+
+<div class="page-header">
+  <h1>Sign In</h1>
+</div>
+
+<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizonal' }) do |f| %>
   <%= f.input :email, :autofocus => true %>
   <%= f.input :password %>
   <%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
-  <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
+  <div class="form-actions">
+    <%= f.button :submit, "Sign in", :class => 'btn-primary' %>
+  </div>
 <% end %>
 <%= render "devise/shared/links" %>

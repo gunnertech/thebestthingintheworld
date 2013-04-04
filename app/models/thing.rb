@@ -13,9 +13,24 @@ class Thing < ActiveRecord::Base
                     :default_url => "/assets/images/:style/missing.png",
                     :url => Settings.paperclip.url
   
+  has_many :assigned_things
+  has_many :users, through: :assigned_things
+  
   validates :name, presence: true, uniqueness: true
   validates_attachment_size :image, :less_than => 5.megabytes
   validates_attachment_presence :image
   
-  default_scope order{ position.asc }
+  default_scope order{ average_position.asc }
+  
+  after_create :add_assigned_things
+  
+  def add_assigned_things
+    User.find_in_batches do |group|
+      sleep(1)
+      group.each do |user|
+        AssignedThing.create(user: user, thing: self)
+      end
+    end
+  end
+  handle_asynchronously :add_assigned_things
 end

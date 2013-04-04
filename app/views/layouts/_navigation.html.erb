@@ -19,11 +19,6 @@
       <li>
       <%= link_to 'Edit account', edit_user_registration_path %>
       </li>
-      <% if current_user.has_role? :admin %>
-        <li>
-        <%= link_to 'Admin', users_path %>
-        </li>
-      <% end %>
     <% else %>
       <li>
       <%= link_to 'Sign up', new_user_registration_path %>
@@ -35,9 +30,12 @@
         <b class="caret"></b>
       </a>
       <ul class="dropdown-menu">
-        <li><%= link_to "Compare", things_comparision_path %></li>
-        <li><%= link_to "Leader Board", things_path %></li>
-        <li><%= link_to "Add a Thing", new_thing_path %></li>
+        <li><%= link_to "Compare", user_assigned_things_comparision_path("me") %></li>
+        <li><%= link_to "My Leaderboard", user_assigned_things_path("me") %></li>
+        <li><%= link_to "Overall Leaderboard", things_path %></li>
+        <% if can? :create, Thing %>
+          <li><%= link_to "Add a Thing", new_thing_path %></li>
+        <% end %>
       </ul>
     </li>
     <li>

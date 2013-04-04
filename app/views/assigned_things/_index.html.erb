@@ -1,0 +1,29 @@
+<%- model_class = Thing -%>
+<div class="alert alert-error">
+  You're leaderboard ranks the comparisons you've made. The things you like best are listed first and the things you like least are listed last. Feel free to rearrange things here or with <%= link_to "comparisons", user_assigned_things_comparision_path("me") %>.
+</div>
+
+<div class="page-header">
+  <h1>My Leaderboard</h1>
+</div>
+
+<% @assigned_things.each do |assigned_thing| %>
+  <div class="row-fluid">
+    <div class="alert alert-block clearfix">
+      <div class="span1"><%= link_to(image_tag(assigned_thing.thing.image.url(:small)), assigned_thing.thing) %></div>
+      <div class="span5"><h3><%= link_to "##{assigned_thing.position}", assigned_thing.thing %> - <%= link_to assigned_thing.thing.name, assigned_thing.thing %></h3></div>
+      <div class="span6">
+        <h3>
+        <% if assigned_thing.position == 1 %>
+          <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: params[:page]), method: "put", class: 'btn btn-primary disabled' %>
+        <% else %>
+          <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
+        <% end %>
+        </h3>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+<%= will_paginate collection %>

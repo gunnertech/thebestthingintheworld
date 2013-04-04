@@ -1,0 +1,10 @@
+<%= simple_form_for @assigned_thing, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :thing_id %>
+  <%= f.input :user_id %>
+  <%= f.input :position %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                assigned_things_path, :class => 'btn' %>
+  </div>
+<% end %>
