@@ -24,8 +24,8 @@ class User < ActiveRecord::Base
       sleep(1)
       group.each do |thing|
         at = AssignedThing.new(user: self, thing: thing)
-        at.position = thing.average_position.to_i
         at.save
+        at.set_list_position(thing.average_position.to_i)
       end
     end
   end
