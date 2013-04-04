@@ -14,7 +14,7 @@ class Thing < ActiveRecord::Base
                     :url => Settings.paperclip.url
   
   validates :name, presence: true, uniqueness: true
-  validates_attachment_size :image, :less_than => 2.megabytes
+  validates_attachment_size :image, :less_than => 5.megabytes
   
   default_scope order{ position.asc }
 end

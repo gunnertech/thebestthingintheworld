@@ -14,6 +14,10 @@ class ThingsController < InheritedResources::Base
     create!{ things_comparision_url }
   end
   
+  def update
+    update!{ things_comparision_url(page: (Thing.count - resource.position).to_s) }
+  end
+  
   protected
   
   def per_page
