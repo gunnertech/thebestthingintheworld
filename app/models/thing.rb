@@ -15,6 +15,7 @@ class Thing < ActiveRecord::Base
   
   validates :name, presence: true, uniqueness: true
   validates_attachment_size :image, :less_than => 5.megabytes
+  validates_attachment_presence :image
   
   default_scope order{ position.asc }
 end
