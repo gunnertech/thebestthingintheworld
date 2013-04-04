@@ -20,6 +20,27 @@
         </div>
       </li>
     <% end %>
+    
+    <% Thing.where{ position == my{ collection.last.position - 1} }.each do |thing| %>
+      <li class="span6">
+        <div class="thumbnail">
+          <%= image_tag thing.image.url %>
+          <div class="caption">
+            <h3>
+              <span class="badge badge-info">#<%= thing.position %></span>
+              <%= link_to thing.name, thing %>
+            </h3>
+            <p>
+              <% if thing.position == 1 %>
+                <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_thing_path(thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
+              <% else %>
+                <%= link_to "<span class=\"icon icon-trophy\"></span> Move Up".html_safe, move_up_thing_path(thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </li>
+    <% end %>
   </ul>
 </div>
 

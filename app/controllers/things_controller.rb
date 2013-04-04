@@ -17,13 +17,14 @@ class ThingsController < InheritedResources::Base
   protected
   
   def per_page
-    params[:view] == 'compare' ? 2 : 25
+    params[:view] == 'compare' ? 1 : 25
   end
   
   def collection
     return @things if @things
     
     @things = end_of_association_chain.accessible_by(current_ability).paginate(page: params[:page], :per_page => per_page)
+    
     
     #@things = @things.limit(2) if params[:view] == 'compare'
     @things = @things.reorder{ position.desc } if params[:view] == 'compare'
