@@ -40,4 +40,3 @@ gem 'aws-sdk', '~> 1.3.4'
 gem 'rails_config'
 gem "paperclip", "~> 3.0"
 gem 'delayed_job_active_record'
-gem 'acts-as-taggable-on', '~> 2.3.1'

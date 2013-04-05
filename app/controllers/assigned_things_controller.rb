@@ -32,10 +32,8 @@ class AssignedThingsController < InheritedResources::Base
   
   def collection
     return @assigned_things if @assigned_things
-
     
     @assigned_things = end_of_association_chain.accessible_by(current_ability).paginate(page: (params[:page].to_i == 0 ? "1" : params[:page]), :per_page => per_page)
-    
     
     @assigned_things = @assigned_things.reorder{ position.desc } if params[:view] == 'compare'
     

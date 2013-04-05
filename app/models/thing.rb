@@ -28,6 +28,10 @@ class Thing < ActiveRecord::Base
     name
   end
   
+  def creator
+    User.find(versions.first.whodunnit)
+  end
+  
   def add_assigned_things
     User.find_in_batches do |group|
       sleep(1)
