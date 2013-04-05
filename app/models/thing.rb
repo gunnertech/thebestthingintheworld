@@ -24,6 +24,10 @@ class Thing < ActiveRecord::Base
   
   after_create :add_assigned_things
   
+  def to_s
+    name
+  end
+  
   def add_assigned_things
     User.find_in_batches do |group|
       sleep(1)

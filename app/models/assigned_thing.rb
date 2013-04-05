@@ -12,6 +12,10 @@ class AssignedThing < ActiveRecord::Base
   
   default_scope order{ position.asc }
   
+  def to_s
+    thing.to_s
+  end
+  
   def update_things_average_position
     thing.average_position = thing.assigned_things.group{ id }.select{ [avg(position)] }.first.try(:avg)
     thing.save!

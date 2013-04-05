@@ -9,8 +9,8 @@
   
   <div class="alert alert-error alert-block">
     <h4>It's Simple!</h4>
-    <p>If you think the first thing is better than the second, click "Move Up." If not, click "Next" to see the next comparison.</p>
-    <p>Rearrange the things until they're ordered from your least favorite to most favorite. Each time you move something, you affect <%= link_to "your leaderboard", user_assigned_things_path("me") %> and the <%= link_to "Overall Leaderboard", things_url %>.</p>
+    <p>Just click the button for the thing that you think is better! Or use the navigation below to jump to another matchup.</p>
+    <p>Go through each matchup until you've created your hierarchy of things. Each matchup you decide affects <%= link_to "your leaderboard", user_assigned_things_path("me") %> and the <%= link_to "Overall Leaderboard", things_url %>.</p>
     <p>Are we missing something? <strong><%= link_to "Add it!", new_thing_path %></strong></p>
   </div>
 
@@ -21,19 +21,17 @@
           <div class="thumbnail">
             <%= image_tag assigned_thing.thing.image.url %>
             <div class="caption clearfix">
-              <h3 class="pull-left">
+              <h3>
                 <span class="badge badge-info">#<%= assigned_thing.position %></span>
                 <%= link_to assigned_thing.thing.name, assigned_thing.thing %>
               </h3>
-              <h3 class="pull-right">
-                <% if assigned_thing.position == 1 %>
-                  <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
-                <% else %>
-                  <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: (params[:page].to_i + 1).to_s), method: "put", class: 'btn btn-primary' %>
-                <% end %>
-              </h3>
             </div>
           </div>
+          <% if assigned_thing.position == 1 %>
+            <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled span12  btn-large' %>
+          <% else %>
+            <%= link_to "#{assigned_thing} is Better".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: (params[:page].to_i + 1).to_s), method: "put", class: 'btn btn-primary span12 btn-large' %>
+          <% end %>
         </li>
       <% end %>
     
@@ -42,19 +40,17 @@
           <div class="thumbnail">
             <%= image_tag assigned_thing.thing.image.url %>
             <div class="caption clearfix">
-              <h3 class="pull-left">
+              <h3>
                 <span class="badge badge-info">#<%= assigned_thing.position %></span>
                 <%= link_to assigned_thing.thing.name, assigned_thing.thing %>
               </h3>
-              <h3 class="pull-right">
-                <% if assigned_thing.position == 1 %>
-                  <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled' %>
-                <% else %>
-                  <%= link_to "Next <span class=\"icon icon-arrow-right\"></span> ".html_safe, user_assigned_things_comparision_path("me",page: (params[:page].to_i + 1).to_s), class: 'btn btn-warning' %>
-                <% end %>
-              </h3>
             </div>
           </div>
+          <% if assigned_thing.position == 1 %>
+            <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled span12 btn-large' %>
+          <% else %>
+            <%= link_to "#{assigned_thing} is Better".html_safe, user_assigned_things_comparision_path("me",page: (params[:page].to_i + 1).to_s), class: 'btn btn-primary span12 btn-large' %>
+          <% end %>
         </li>
       <% end %>
     </ul>
