@@ -1,5 +1,5 @@
 class Thing < ActiveRecord::Base
-  attr_accessible :name, :image
+  attr_accessible :name, :image, :tag_list
   acts_as_list
   has_paper_trail
   has_attached_file :image, 
@@ -15,12 +15,16 @@ class Thing < ActiveRecord::Base
   
   has_many :assigned_things
   has_many :users, through: :assigned_things
+  has_many :taggings
+  has_many :tags, through: :taggings
   
   validates :name, presence: true, uniqueness: true
   validates_attachment_size :image, :less_than => 5.megabytes
   validates_attachment_presence :image
   
   default_scope order{ average_position.asc }
+  
+  scope :tagged_with, lambda { |tag| joins{ tags }.where{ tags.name == my{tag} } }
   
   after_create :add_assigned_things
   
