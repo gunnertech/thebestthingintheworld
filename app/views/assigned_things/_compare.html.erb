@@ -55,6 +55,8 @@
       <% end %>
     </ul>
   </div>
+  
+  Tags: <%= raw Tag.all.map(&:name).join(', ') %>
 
   <%= will_paginate collection %>
 <% end %>
