@@ -20,7 +20,7 @@ class Thing < ActiveRecord::Base
   
   validates :name, presence: true, uniqueness: true
   validates_attachment_size :image, :less_than => 5.megabytes
-  validates_attachment_presence :image, if: Proc.new{ self.image_url.blank? }
+  validates_attachment_presence :image, if: Proc.new{ |thing| thing.image_url.blank? }
   
   default_scope order{ average_position.asc }
   
