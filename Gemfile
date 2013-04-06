@@ -39,10 +39,6 @@ gem 'paper_trail', '~> 2'
 gem 'aws-sdk', '~> 1.3.4'
 gem 'rails_config'
 gem "paperclip", "~> 3.0"
-<<<<<<< HEAD
 gem 'delayed_job_active_record'
 gem 'acts-as-taggable-on', '~> 2.3.1'
 gem "mechanize"
-=======
-gem 'delayed_job_active_record'
->>>>>>> e91704c99de5bfc815b2d103e319388dfe9b291e
