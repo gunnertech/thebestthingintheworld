@@ -1,3 +1,8 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
+$(->
+  $('.sample-images a').click( (event) -> 
+    event.preventDefault()
+    console.log($(this).attr('href'))
+    $('.sample-images a').removeClass('active').filter($(this)).addClass('active')
+    $('#thing_image_url').val($(this).attr('href'))
+  )
+)

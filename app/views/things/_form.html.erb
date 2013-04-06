@@ -1,9 +1,36 @@
-<%= simple_form_for @thing, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :name %>
-  <%= f.input :image %>
-  <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                things_path, :class => 'btn' %>
+<div class="row-fluid">
+  <div class="span8">
+    <%= simple_form_for @thing, :html => { :class => 'form-horizontal' } do |f| %>
+      <%= f.input :name %>
+      
+      <% if @image_urls %>
+        <%= f.input :image, hint: "Upload an image or choose one from below" %>
+        <%= f.input :image_url, as: "hidden" %>
+      <% end %>
+      <div class="form-actions">
+        <%= f.button :submit, :class => 'btn-primary' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                    things_path, :class => 'btn' %>
+      </div>
+    <% end %>
+  </div>
+  <div class="span4">
+    <%= image_tag resource.image.url %>
+  </div>
+</div>
+
+<% if @image_urls && !@image_urls.empty? %>
+  <div class="row-fluid sample-images" style="margin-top: 40px;">
+    <ul class="thumbnails">
+      <% @image_urls.each do |image_url| %>
+        <li class="span2">
+          <div class="thumbnail-wrapper" style="height: 170px; overflow: scroll;">
+            <a class="thumbnail" href="<%= image_url %>" style="max-height: 165px; overflow: scroll;">
+              <%= image_tag image_url %>
+            </a>
+          </div>
+        </li>
+      <% end %>
+    </ul>
   </div>
 <% end %>

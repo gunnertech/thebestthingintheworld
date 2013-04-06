@@ -41,3 +41,4 @@ gem 'rails_config'
 gem "paperclip", "~> 3.0"
 gem 'delayed_job_active_record'
 gem 'acts-as-taggable-on', '~> 2.3.1'
+gem "mechanize"

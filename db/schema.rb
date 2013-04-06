@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130404194208) do
+ActiveRecord::Schema.define(:version => 20130406173708) do
 
   create_table "assigned_things", :force => true do |t|
     t.integer  "thing_id"
@@ -61,6 +61,8 @@ ActiveRecord::Schema.define(:version => 20130404194208) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.float    "average_position"
+    t.string   "image_url"
+    t.boolean  "image_processing"
   end
 
   create_table "users", :force => true do |t|
