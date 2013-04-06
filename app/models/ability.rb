@@ -8,6 +8,9 @@ class Ability
     elsif !user.new_record?
       can [:move_up], AssignedThing, user_id: user.id
       can [:create], Thing
+      can :manage, Thing do |thing|
+        thing.new_record? || thing.creator == user
+      end
     end
     can :read, :all
   end

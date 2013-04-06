@@ -1,5 +1,5 @@
 class Thing < ActiveRecord::Base
-  attr_accessible :name, :image, :image_url
+  attr_accessible :name, :image, :tag_list
   acts_as_list
   has_paper_trail
   has_attached_file :image, 
@@ -15,12 +15,16 @@ class Thing < ActiveRecord::Base
   
   has_many :assigned_things
   has_many :users, through: :assigned_things
+  has_many :taggings
+  has_many :tags, through: :taggings
   
   validates :name, presence: true, uniqueness: true
   validates_attachment_size :image, :less_than => 5.megabytes
   validates_attachment_presence :image, if: Proc.new{ self.image_url.blank? }
   
   default_scope order{ average_position.asc }
+  
+  scope :tagged_with, lambda { |tag| joins{ tags }.where{ tags.name == my{tag} } }
   
   after_create :add_assigned_things
   
@@ -56,6 +60,20 @@ class Thing < ActiveRecord::Base
   end
   handle_asynchronously :download_image
     
+  def creator
+    User.find(versions.first.whodunnit)
+  end
+  
+  def tag_list
+    tags.map(&:name).join(', ')
+  end
+  
+  def tag_list=(names)
+    self.tags = names.split(",").map do |n|
+      Tag.where(name: n.strip).first_or_create!
+    end
+  end
+  
   def add_assigned_things
     User.find_in_batches do |group|
       sleep(1)
@@ -72,8 +90,6 @@ class Thing < ActiveRecord::Base
     image_content_type_changed? ||
     image_url_changed?
   end
-  
-  
   
   class << self
     def suggested_images(term='coffee')

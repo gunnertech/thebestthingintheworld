@@ -5,11 +5,12 @@ class ThingsController < InheritedResources::Base
   before_filter :set_suggested_images, only: [:edit,:new,:create]
   
   def create
-    create!(notice: "Thanks for the new Thing! We're busy spreading it throughout the interwebs so it may take a few minutes for it to show up."){ user_assigned_things_comparision_url("me") }
+    #create!(notice: "Thanks for the new Thing! We're busy spreading it throughout the interwebs so it may take a few minutes for it to show up."){ user_assigned_things_comparision_url("me") }
+    create!(notice: "Your thing has been queued for creation. It will be available shortly.") { user_assigned_things_comparision_url("me") }
   end
   
   def update
-    update!(notice: "Thanks for the update. Bare with us while we process the changes. It may take a few minutes to spread throughout the system."){ user_assigned_things_comparision_url("me",page: (Thing.count - resource.position).to_s) }
+    update!(notice: "Thanks for the update. Bare with us while we process the changes. It may take a few minutes to spread throughout the entire application."){ user_assigned_things_comparision_url("me",page: (Thing.count - resource.position).to_s) }
   end
   
   def suggested_images

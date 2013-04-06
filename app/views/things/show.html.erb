@@ -6,6 +6,10 @@
   </h1>
 </div>
 
+<%= simple_form_for resource, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :tag_list %>
+<% end %>
+
 <h2>History</h2>
 
 <table class="table table-striped table-hover table-condensed">
