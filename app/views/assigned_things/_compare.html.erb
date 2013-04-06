@@ -56,7 +56,9 @@
     </ul>
   </div>
   
-  Tags: <%= raw Tag.all.map(&:name).join(', ') %>
-
+  <!-- Tags: <%= raw Tag.all.map(&:name).join(', ') %> -->
+  
+  <%= link_to "Random Matchup", user_assigned_things_comparision_path("me",page: (rand(Thing.count) + 1).to_s), class: 'btn btn-primary btn-large' %>
+  
   <%= will_paginate collection %>
 <% end %>
