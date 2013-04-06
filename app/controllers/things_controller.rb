@@ -4,7 +4,7 @@ class ThingsController < InheritedResources::Base
   before_filter :set_page, only: [:index]
   
   def create
-    create!{ user_assigned_things_comparision_url("me") }
+    create!(notice: "Your thing has been queued for creation. It will be available shortly.") { user_assigned_things_comparision_url("me") }
   end
   
   def update
