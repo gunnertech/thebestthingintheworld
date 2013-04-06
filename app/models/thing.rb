@@ -1,5 +1,5 @@
 class Thing < ActiveRecord::Base
-  attr_accessible :name, :image, :tag_list
+  attr_accessible :name, :image, :tag_list, :image_url
   acts_as_list
   has_paper_trail
   has_attached_file :image, 
