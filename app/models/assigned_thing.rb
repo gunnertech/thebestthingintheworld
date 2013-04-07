@@ -35,7 +35,7 @@ class AssignedThing < ActiveRecord::Base
     graph = Koala::Facebook::API.new(token)
     Rails.logger.warn("~~~~~#{token}~~~~~")
     Rails.logger.warn("~~~~~#{url}~~~~~")
-    graph.put_connections("me", "likes", object: url, url: url)
+    graph.put_connections("me", "tbtitworld:like", thing: url)
   end
   handle_asynchronously :post_to_facebook
   
