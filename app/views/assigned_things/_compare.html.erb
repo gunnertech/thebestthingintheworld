@@ -4,15 +4,18 @@
     <p>We're building you your own <strong>personal</strong> list of things!... But it takes a minute.</p>
     <p>Refresh this page in like 30 seconds, and you'll be in the game!</p>
   </div>
-  
 <% else %>
   
-  <div class="alert alert-error alert-block">
-    <h4>It's Simple!</h4>
-    <p>Just click the button for the thing that you think is better! Or use the navigation below to jump to another matchup.</p>
-    <p>Go through each matchup until you've created your hierarchy of things. Each matchup you decide affects <%= link_to "your leaderboard", user_assigned_things_path("me") %> and the <%= link_to "Overall Leaderboard", things_url %>.</p>
-    <p>Are we missing something? <strong><%= link_to "Add it!", new_thing_path %></strong></p>
-  </div>
+  <% if current_user.try(:assigned_things).try(:count) == 0 || current_user.try(:assigned_things).try(:count).nil? %>
+    <div class="alert alert-error alert-block">
+      <h4>It's Simple!</h4>
+      <p>Just click the button for the thing that you think is better! Or use the navigation below to jump to another matchup.</p>
+      <p>Go through each matchup until you've created your hierarchy of things. Each matchup you decide affects <%= link_to "your leaderboard", user_assigned_things_path("me") %> and the <%= link_to "Overall Leaderboard", things_url %>.</p>
+      <p>Are we missing something? <strong><%= link_to "Add it!", new_thing_path %></strong></p>
+    </div>
+  <% end %>
+  
+  <%= link_to("Connect with Facebook", oauth_user_path("me"), class: 'btn btn-danger') unless current_user.try(:facebook_access_token) %>
 
   <div class="row-fluid">
     <ul class="thumbnails">
