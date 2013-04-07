@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1><%= @thing.name %></h1>
+    <p>
+      <%= image_tag @thing.image.url %>
+    </p>
+    <p>
+      <%= link_to "Rank it now!", user_assigned_things_comparision_url("me") %>
+    </p>
+  </body>
+</html>

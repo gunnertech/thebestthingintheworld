@@ -27,9 +27,10 @@ class Thing < ActiveRecord::Base
   scope :tagged_with, lambda { |tag| joins{ tags }.where{ tags.name == my{tag} } }
   
   after_create :add_assigned_things
+  after_create :send_notifications
   
-  # before_validation :download_image
   after_save :download_image, if: Proc.new{ |thing| thing.image_url.present? && thing.image_url_changed? }
+  
   
   before_image_post_process do |thing|
     if !thing.image_processing? && thing.image_changed?
@@ -83,6 +84,11 @@ class Thing < ActiveRecord::Base
     end
   end
   handle_asynchronously :add_assigned_things
+  
+  def send_notifications
+    ThingMailer.notification_email(self).deliver
+  end
+  handle_asynchronously :send_notifications
   
   def image_changed?
     image_file_size_changed? ||
