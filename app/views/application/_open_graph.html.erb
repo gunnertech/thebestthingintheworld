@@ -3,7 +3,7 @@
   <meta property="og:site_name" content="The Best Thing In The World" />
   
   <meta property="og:type"  content="tbtitworld:thing" />
-  <meta property="og:url"   content="<%= thing_url(@thing) %>" />
+  <meta property="og:url"   content="<%= thing_url(@thing, user_id: @user.try(:id), comparison_thing_id: @comparison_thing.try(:id)) %>" />
   <meta property="og:title" content="<%= @thing.to_s.truncate(30) %>" />
   <meta property="og:image"  content="<%= @thing.image.url %>" />
   
