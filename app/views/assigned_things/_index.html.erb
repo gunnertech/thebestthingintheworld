@@ -4,7 +4,13 @@
 </div>
 
 <div class="page-header">
-  <h1>My Leaderboard</h1>
+  <h1>
+    <% if current_user == parent %>
+      My Leaderboard
+    <% else %>
+      <%= parent.name.possessive %> Leaderboard
+    <% end %>
+  </h1>
 </div>
 
 <% @assigned_things.each do |assigned_thing| %>
@@ -15,7 +21,6 @@
       <div class="span6">
         <h3>
         <% if assigned_thing.position == 1 %>
-          <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: params[:page]), method: "put", class: 'btn btn-primary disabled' %>
         <% else %>
           <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
         <% end %>

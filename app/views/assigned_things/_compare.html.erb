@@ -31,7 +31,6 @@
             </div>
           </div>
           <% if assigned_thing.position == 1 %>
-            <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled span12  btn-large' %>
           <% else %>
             <%= link_to "#{assigned_thing} is Better".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: (params[:page].to_i + 1).to_s, compared_to: @comparison_collection.first.try(:thing_id)), method: "put", class: 'btn btn-primary span12 btn-large' %>
           <% end %>
@@ -50,7 +49,6 @@
             </div>
           </div>
           <% if assigned_thing.position == 1 %>
-            <%= link_to "<span class=\"icon icon-trophy\"></span> The Best Thing In The World".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary disabled span12 btn-large' %>
           <% else %>
             <%= link_to "#{assigned_thing} is Better".html_safe, user_assigned_things_comparision_path("me",page: (params[:page].to_i + 1).to_s, compared_to: collection.first.try(:thing_id)), class: 'btn btn-primary span12 btn-large' %>
           <% end %>
