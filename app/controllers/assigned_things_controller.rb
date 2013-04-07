@@ -1,7 +1,6 @@
 class AssignedThingsController < InheritedResources::Base
   belongs_to :user
-  prepend_before_filter :set_user_id
-  before_filter :set_page, only: [:index]
+  before_filter [:set_page], only: [:index]
   
   custom_actions resource: :move_up
   
@@ -11,6 +10,7 @@ class AssignedThingsController < InheritedResources::Base
   
   def move_up
     authorize! :move_up, resource
+    resource.comparision = AssignedThing.find_by_id(params[:compared_to]) if params[:compared_to].present?
     resource.move_higher
     flash[:notice] = "You moved that thing up! Good for you!"
     redirect_to params[:return_to].present? ? params[:return_to] : user_assigned_things_comparision_url("me",page: params[:page])
@@ -22,6 +22,11 @@ class AssignedThingsController < InheritedResources::Base
   
   def update
     update!{ assigned_things_comparision_url(page: (AssignedThing.count - resource.position).to_s) }
+  end
+  
+  def index
+    @comparison_collection = parent.assigned_things.where{ position == my{ collection.last.position - 1} } if params[:view] == 'compare'
+    index!
   end
   
   protected
@@ -42,11 +47,5 @@ class AssignedThingsController < InheritedResources::Base
   
   def set_page
     params[:page] = params[:page].present? ? params[:page] : "1"
-  end
-  
-  def set_user_id
-    redirect_to new_user_session_path and return false if !signed_in? && params[:user_id] == 'me'
-    
-    params[:user_id] = current_user.id if params[:user_id] == 'me'
   end
 end

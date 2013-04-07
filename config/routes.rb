@@ -14,6 +14,10 @@ Thebestthingintheworld::Application.routes.draw do
   
   devise_for :users
   resources :users do
+    member do
+      get 'oauth'
+    end
+    
     resources :assigned_things do
       member do
         put 'move_up'

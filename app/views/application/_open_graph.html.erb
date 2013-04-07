@@ -1,0 +1,13 @@
+<% if @thing && !@thing.new_record? %>
+  <meta property="fb:app_id" content="239700296176185" />
+  <meta property="og:site_name" content="The Best Thing In The World" />
+  
+  <meta property="og:type"  content="object" />
+  <meta property="og:url"   content="<%= thing_url(@thing) %>" />
+  <meta property="og:title" content="<%= @thing.to_s.truncate(30) %>" />
+  <meta property="og:image"  content="<%= @thing.image.url %>" />
+  
+  <%- if @comparison_thing %>
+    <meta property="og:description" content="<%= @user.to_s %> says <%= @thing %> is better than <%= @comparison_thing %>" />
+  <% end -%>
+<% end %>

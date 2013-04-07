@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object#">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "The Best Thing In The World" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "The Best Thing In The World" %>">
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
+    <%= render partial: "open_graph" %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
   </head>
   <body class="<%= controller_name %> <%= action_name %>">
+    <%= render partial: "facebook" %>
     <div class="navbar navbar-fixed-top">
       <nav class="navbar-inner">
         <div class="container">

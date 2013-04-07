@@ -54,6 +54,10 @@ class Thing < ActiveRecord::Base
     name
   end
   
+  def to_param
+    "#{id}-#{to_s.parameterize}"
+  end
+  
   def download_image
     self.image = URI.parse(image_url) rescue nil
     self.image_url = nil

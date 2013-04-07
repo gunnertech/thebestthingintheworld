@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130407002412) do
+ActiveRecord::Schema.define(:version => 20130407021927) do
 
   create_table "assigned_things", :force => true do |t|
     t.integer  "thing_id"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 20130407002412) do
     t.datetime "updated_at",                                    :null => false
     t.string   "name"
     t.boolean  "send_new_thing_notification", :default => true, :null => false
+    t.string   "facebook_access_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

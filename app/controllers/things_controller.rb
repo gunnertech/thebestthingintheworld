@@ -3,6 +3,7 @@ class ThingsController < InheritedResources::Base
   
   before_filter :set_page, only: [:index]
   before_filter :set_suggested_images, only: [:edit,:new,:create]
+  before_filter :set_comparison_thing, only: [:show]
   
   def create
     #create!(notice: "Thanks for the new Thing! We're busy spreading it throughout the interwebs so it may take a few minutes for it to show up."){ user_assigned_things_comparision_url("me") }
@@ -11,10 +12,6 @@ class ThingsController < InheritedResources::Base
   
   def update
     update!(notice: "Thanks for the update. Bare with us while we process the changes. It may take a few minutes to spread throughout the entire application."){ user_assigned_things_comparision_url("me",page: (Thing.count - resource.position).to_s) }
-  end
-  
-  def suggested_images
-    
   end
   
   protected
@@ -37,6 +34,11 @@ class ThingsController < InheritedResources::Base
   
   def set_page
     params[:page] = params[:page].present? ? params[:page] : "1"
+  end
+  
+  def set_comparison_thing
+    @comparison_thing = Thing.find(params[:comparison_thing_id]) if params[:comparison_thing_id].present?
+    @user = User.find(params[:user_id]) if params[:user_id].present?
   end
   
 end
