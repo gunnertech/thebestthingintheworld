@@ -27,14 +27,12 @@ class AssignedThing < ActiveRecord::Base
   def queue_for_facebook
     post_to_facebook(
       user.facebook_access_token,
-      Rails.application.routes.url_helpers.thing_url(thing, user_id: user.id, comparison_thing_id: comparision.try(:id), host: ENV['HOST'])
+      Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:id), host: ENV['HOST'])
     )
   end
   
   def post_to_facebook(token,url)
     graph = Koala::Facebook::API.new(token)
-    Rails.logger.warn("~~~~~#{token}~~~~~")
-    Rails.logger.warn("~~~~~#{url}~~~~~")
     graph.put_connections("me", "tbtitworld:like", thing: url)
   end
   handle_asynchronously :post_to_facebook
