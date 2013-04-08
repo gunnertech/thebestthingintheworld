@@ -28,6 +28,7 @@ class Thing < ActiveRecord::Base
   
   after_create :add_assigned_things
   after_create :send_notifications
+  after_create :queue_for_facebook, if: Proc.new{ |thing| thing.creator }
   
   after_save :download_image, if: Proc.new{ |thing| thing.image_url.present? && thing.image_url_changed? }
   
@@ -100,6 +101,20 @@ class Thing < ActiveRecord::Base
     image_content_type_changed? ||
     image_url_changed?
   end
+  
+  def queue_for_facebook
+    post_to_facebook(
+      creator.facebook_access_token,
+      Rails.application.routes.url_helpers.thing_url(thing, host: ENV['HOST'])
+    )
+  end
+  
+  
+  def post_to_facebook(token,url)
+    graph = Koala::Facebook::API.new(token)
+    graph.put_connections("me", "tbtitworld:add", thing: url)
+  end
+  handle_asynchronously :post_to_facebook
   
   class << self
     def suggested_images(term='coffee')
