@@ -105,7 +105,7 @@ class Thing < ActiveRecord::Base
   def queue_for_facebook
     post_to_facebook(
       creator.facebook_access_token,
-      Rails.application.routes.url_helpers.thing_url(thing, host: ENV['HOST'])
+      Rails.application.routes.url_helpers.thing_url(self, host: ENV['HOST'])
     )
   end
   
