@@ -103,10 +103,14 @@ class Thing < ActiveRecord::Base
   end
   
   def queue_for_facebook
-    post_to_facebook(
-      creator.facebook_access_token,
-      Rails.application.routes.url_helpers.thing_url(self, host: ENV['HOST'])
-    )
+    if image.exists?
+      post_to_facebook(
+        creator.facebook_access_token,
+        Rails.application.routes.url_helpers.thing_url(self, host: ENV['HOST'])
+      )
+    else
+      self.delay.queue_for_facebook
+    end
   end
   
   
