@@ -1,6 +1,8 @@
 class ThingsController < InheritedResources::Base
   skip_load_and_authorize_resource only: [:index]
   
+  belongs_to :user, optional: true
+  
   before_filter :set_page, only: [:index]
   before_filter :set_suggested_images, only: [:edit,:new,:create]
   before_filter :set_comparison_thing, only: [:show]

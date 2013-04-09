@@ -1,9 +1,16 @@
 <%- model_class = Thing -%>
-<div class="page-header">
-  <h1>
+<div class="page-header row-fluid">
+  <h1 class="span8">
     <%= resource.name %> 
-    <small>(#<%= resource.position %> of <%= Thing.count %> )</small>
+    <small>(#<%= resource.average_position %> of <%= Thing.count %> )</small>
   </h1>
+  <div class="span4">
+    <% if parent? %>
+      <span class="label label-inverse">Average Position: <%= resource.average_position %></span>
+    <% elsif signed_in? %>
+      <span class="label label-inverse">Your Ranking: <%= resource.assigned_things.where{ user_id == my{current_user.id}}.first.position %></span>
+    <% end %>
+  </div>
 </div>
 
 <%= simple_form_for resource, :html => { :class => 'form-horizontal' } do |f| %>
@@ -15,9 +22,8 @@
 <table class="table table-striped table-hover table-condensed">
   <thead>
     <tr>
-      <td>Rank</td>
-      <td>User</td>
-      <td>Changed</td>
+      <th>Average Rank</th>
+      <th>Changed</th>
     </tr>
   </thead>
   <tbody>
@@ -25,8 +31,7 @@
       <% thing = YAML::load(version.object) rescue nil %>
       <% if thing %>
         <tr>
-          <td class="count"><%= thing['position'].to_i %></td>
-          <td><%= User.where{ id == my{version.whodunnit} }.first.try(:to_s) || 'Anonymous' %></td>
+          <td class="count"><%= thing['average_position'].to_f %></td>
           <td><time class="convert"><%=l version.created_at %></time></td>
         </tr>
       <% end %>
