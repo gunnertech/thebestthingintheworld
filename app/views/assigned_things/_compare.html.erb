@@ -1,3 +1,5 @@
+<% @comparison_collection = params[:second_thing_id].present? ? [collection.last] : @comparison_collection %>
+
 <% if parent.assigned_things.count == 0 %>
   <div class="alert alert-error alert-block">
     <h4>Right On!</h4>
@@ -19,7 +21,7 @@
 
   <div class="row-fluid">
     <ul class="thumbnails">
-      <% collection.each do |assigned_thing| %>
+      <% collection.limit(1).each do |assigned_thing| %>
         <li class="span6">
           <div class="thumbnail">
             <%= image_tag assigned_thing.thing.image.url %>
@@ -32,7 +34,7 @@
           </div>
           <% if assigned_thing.position == 1 %>
           <% else %>
-            <%= link_to "#{assigned_thing} is Better".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: (params[:page].to_i + 1).to_s, compared_to: @comparison_collection.first.try(:thing_id)), method: "put", class: 'btn btn-primary span12 btn-large' %>
+            <%= link_to "#{assigned_thing} is Better".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, page: (params[:page].to_i + 1).to_s, compared_to: @comparison_collection.first.try(:id)), method: "put", class: 'btn btn-primary span12 btn-large' %>
           <% end %>
         </li>
       <% end %>
@@ -50,7 +52,7 @@
           </div>
           <% if assigned_thing.position == 1 %>
           <% else %>
-            <%= link_to "#{assigned_thing} is Better".html_safe, user_assigned_things_comparision_path("me",page: (params[:page].to_i + 1).to_s, compared_to: collection.first.try(:thing_id)), class: 'btn btn-primary span12 btn-large' %>
+            <%= link_to "#{assigned_thing} is Better".html_safe, user_assigned_things_comparision_path("me",page: (params[:page].to_i + 1).to_s, compared_to: collection.first.try(:id)), class: 'btn btn-primary span12 btn-large' %>
           <% end %>
         </li>
       <% end %>
@@ -59,7 +61,29 @@
   
   <!-- Tags: <%= raw Tag.all.map(&:name).join(', ') %> -->
   
-  <%= link_to "Random Matchup", user_assigned_things_comparision_path("me",page: (rand(Thing.count) + 1).to_s), class: 'btn btn-primary btn-large' %>
+  <div class="row-fluid">
+    <div class="btn-group span4">
+      <%= link_to "<span class=\"icon icon-refresh\"></span> Random Matchup".html_safe, user_assigned_things_comparision_url("me", first_thing_id: @random_thing_1.try(:id), second_thing_id: @random_thing_2.try(:id)), class: 'btn btn-danger btn-large' %>
+      <%= link_to "<span class=\"icon icon-share\"></span> Share Matchup".html_safe, "#", class: 'btn btn-danger btn-large btn-share' %>
+    </div>
+    
+    <form class="form-inline share-url" style="display:none;">
+      <div class="control-group span4">
+        <div class="controls pull-right">
+          <input id="share-url-field" type="text" value="<%= user_assigned_things_comparision_url("me", first_thing_id: collection.first.try(:thing).try(:id), second_thing_id: @comparison_collection.last.try(:thing).try(:id)) %>" />
+        </div>
+      </div>
+      
+      <div class="btn-group span4">
+        <%= link_to "<span class=\"icon icon-envelope\"></span> Email".html_safe, user_assigned_things_comparision_path("me",page: (rand(Thing.count) + 1).to_s), class: 'btn btn-danger' %>
+        <%= link_to "<span class=\"icon icon-facebook\"></span> Facebook".html_safe, "#", class: 'btn btn-danger btn-share' %>
+      </div>
+    </form>
+    
+  </div>
+  
+    
+  
   
   <%= will_paginate collection %>
 <% end %>
