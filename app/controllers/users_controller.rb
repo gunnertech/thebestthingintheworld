@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
   
+  skip_load_and_authorize_resource only: [:oauth]
+  
   def oauth
     @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], oauth_user_url("me"))
     if params[:client_id].present? || params[:code].present?
