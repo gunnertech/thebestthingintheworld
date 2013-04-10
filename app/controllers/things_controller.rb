@@ -24,7 +24,7 @@ class ThingsController < InheritedResources::Base
   end
   
   def per_page
-    params[:view] == 'compare' ? 1 : 25
+    params[:view] == 'compare' ? 1 : 100
   end
   
   def collection

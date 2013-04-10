@@ -3,7 +3,7 @@ class VersionsController < InheritedResources::Base
   protected
   
   def per_page
-    params[:view] == 'compare' ? 2 : 25
+    params[:view] == 'compare' ? 2 : 100
   end
   
   def collection

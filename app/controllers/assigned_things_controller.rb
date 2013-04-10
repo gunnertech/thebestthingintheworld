@@ -46,7 +46,7 @@ class AssignedThingsController < InheritedResources::Base
   protected
   
   def per_page
-    params[:view] == 'compare' && params[:second_thing_id].blank? ? 1 : 25
+    params[:view] == 'compare' && params[:second_thing_id].blank? ? 1 : 100
   end
   
   def collection
