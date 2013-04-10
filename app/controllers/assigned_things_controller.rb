@@ -58,7 +58,7 @@ class AssignedThingsController < InheritedResources::Base
     @assigned_things = @assigned_things.paginate(page: (params[:page].to_i == 0 ? "1" : params[:page]), :per_page => per_page) unless params[:view] == 'compare'
     
     @assigned_things = @assigned_things.joins{ thing }.where{ (thing.id == my{params[:first_thing_id]}) | (thing.id == my{params[:second_thing_id]}) } if params[:first_thing_id].present? && params[:second_thing_id].present?
-    @assigned_things = @assigned_things.reorder{ position.desc } if params[:view] == 'compare'
+    @assigned_things = @assigned_things.reorder{ position.desc }.limit(2) if params[:view] == 'compare'
     
     
     @assigned_things
