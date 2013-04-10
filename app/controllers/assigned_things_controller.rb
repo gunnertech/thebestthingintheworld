@@ -19,7 +19,7 @@ class AssignedThingsController < InheritedResources::Base
     end
     
     flash[:notice] = "You moved that thing up! Good for you!"
-    redirect_to params[:return_to].present? ? params[:return_to] : user_assigned_things_comparision_url("me",page: (Thing.count + 2 - current_position).to_s)
+    redirect_to params[:return_to].present? ? params[:return_to] : user_assigned_things_comparision_url("me",first_thing_id: resource.thing_id, second_thing_id: resource.higher_item.thing_id)
   end
   
   def create
@@ -33,7 +33,8 @@ class AssignedThingsController < InheritedResources::Base
   def index
     if params[:view] == 'compare'
       if params[:second_thing_id].blank?
-        @comparison_collection = parent.assigned_things.where{ position == my{ (collection.last.try(:position) || 0) - 1} }
+        next_position = (collection.first.try(:position) || 0) - 1
+        @comparison_collection = parent.assigned_things.where{ position == my{ next_position } }
       else
         @comparison_collection = parent.assigned_things.joins{ thing }.where{ thing.id == my{ params[:second_thing_id]} }
       end
@@ -58,8 +59,8 @@ class AssignedThingsController < InheritedResources::Base
     @assigned_things = @assigned_things.paginate(page: (params[:page].to_i == 0 ? "1" : params[:page]), :per_page => per_page) unless params[:view] == 'compare'
     
     @assigned_things = @assigned_things.joins{ thing }.where{ (thing.id == my{params[:first_thing_id]}) | (thing.id == my{params[:second_thing_id]}) } if params[:first_thing_id].present? && params[:second_thing_id].present?
-    @assigned_things = @assigned_things.reorder{ position.desc }.limit(2) if params[:view] == 'compare'
     
+    @assigned_things = @assigned_things.reorder{ position.desc }.limit(3) if params[:view] == 'compare'
     
     @assigned_things
   end
