@@ -4,6 +4,7 @@ class Thing < ActiveRecord::Base
   has_paper_trail
   has_attached_file :image, 
                     :styles => { :small => "196x196#", :medium => "600x400#", :large => "1200x800#"},
+                    :convert_options => { :small => "-crop 196x196+0+0", :medium => "-crop 600x400+0+0", :large => "-crop 1200x800+0+0" },
                     :storage => :s3,
                     :s3_credentials => File.join(Rails.root, 'config', 's3.yml'),
                     :path => ':attachment/:id/:style.:extension',
@@ -91,7 +92,11 @@ class Thing < ActiveRecord::Base
   handle_asynchronously :add_assigned_things
   
   def send_notifications
-    ThingMailer.notification_email(self).deliver
+    if image.exists?
+      ThingMailer.notification_email(self).deliver
+    else
+      send_notifications
+    end
   end
   handle_asynchronously :send_notifications
   
