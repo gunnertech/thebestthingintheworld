@@ -11,6 +11,7 @@ class AssignedThingsController < InheritedResources::Base
   def move_up
     authorize! :move_up, resource
     resource.comparision = AssignedThing.find_by_id(params[:compared_to]) if params[:compared_to].present?
+    current_position = resource.position
     if resource.comparision && resource.comparision.position + 1 != resource.position
       resource.insert_at(resource.comparision.position)
     else
@@ -18,7 +19,7 @@ class AssignedThingsController < InheritedResources::Base
     end
     
     flash[:notice] = "You moved that thing up! Good for you!"
-    redirect_to params[:return_to].present? ? params[:return_to] : user_assigned_things_comparision_url("me",page: (Thing.count + 1 - resource.position).to_s)
+    redirect_to params[:return_to].present? ? params[:return_to] : user_assigned_things_comparision_url("me",page: (Thing.count + 2 - current_position).to_s)
   end
   
   def create
