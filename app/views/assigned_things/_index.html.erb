@@ -21,7 +21,7 @@
       <div class="span6">
         <h3>
         <% if assigned_thing.position == 1 %>
-        <% else %>
+        <% elsif can? :move_up, assigned_thing %>
           <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
         <% end %>
         </h3>
