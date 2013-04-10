@@ -78,7 +78,12 @@
       
       <div class="btn-group span4">
         <%= link_to "<span class=\"icon icon-envelope\"></span> Email".html_safe, user_assigned_things_comparision_path("me",page: (rand(Thing.count) + 1).to_s), class: 'btn btn-danger' %>
-        <%= link_to "<span class=\"icon icon-facebook\"></span> Facebook".html_safe, "#", class: 'btn btn-danger btn-share' %>
+        <%= link_to "<span class=\"icon icon-facebook\"></span> Facebook".html_safe, "#", 
+            class: 'btn btn-danger btn-facebook-share',
+            "data-name" => "#{collection.first.to_s} vs. #{@comparison_collection.try(:first).to_s}",
+            "data-link" => user_assigned_things_comparision_url("me", first_thing_id: collection.first.try(:thing).try(:id), second_thing_id: @comparison_collection.last.try(:thing).try(:id)),
+            "data-picture" => collection.first.try(:thing).try(:image).try(:url,:medium)
+        %>
       </div>
     </form>
     
