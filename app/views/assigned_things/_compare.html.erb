@@ -64,10 +64,16 @@
   <!-- Tags: <%= raw Tag.all.map(&:name).join(', ') %> -->
   
   <div class="row-fluid">
-    <div class="btn-group span5">
+    <div class="btn-group span5 hidden-phone">
       <%= link_to "<span class=\"icon icon-refresh\"></span> Random Matchup".html_safe, user_assigned_things_comparision_url("me", first_thing_id: @random_thing_1.try(:id), second_thing_id: @random_thing_2.try(:id)), class: 'btn btn-danger btn-large' %>
       <%= link_to "<span class=\"icon icon-share\"></span> Share Matchup".html_safe, "#", class: 'btn btn-danger btn-large btn-share' %>
     </div>
+    
+    <div class="btn-group span5 visible-phone">
+      <%= link_to "<span class=\"icon icon-refresh\"></span> Random Matchup".html_safe, user_assigned_things_comparision_url("me", first_thing_id: @random_thing_1.try(:id), second_thing_id: @random_thing_2.try(:id)), class: 'btn btn-danger' %>
+      <%= link_to "<span class=\"icon icon-share\"></span> Share Matchup".html_safe, "#", class: 'btn btn-danger btn-share' %>
+    </div>
+    
     
     <form class="form-inline share-url" style="display:none;">
       <div class="control-group span3">
@@ -91,6 +97,7 @@
   
     
   
-  
-  <%= will_paginate collection %>
+  <div class="hidden-phone">
+    <%= will_paginate collection %>
+  </div>
 <% end %>
