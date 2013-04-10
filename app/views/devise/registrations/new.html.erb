@@ -11,6 +11,7 @@
   <%= display_base_errors resource %>
   <%= f.input :name, :autofocus => true %>
   <%= f.input :email, :required => true %>
+  <%= f.input :send_new_thing_notification, hint: "Receive email notifications when new Things are added?", label: "Email Alert" %>
   <%= f.input :password, :required => true %>
   <%= f.input :password_confirmation, :required => true %>
   <div class="form-actions">

@@ -7,9 +7,13 @@
   <%= display_base_errors resource %>
   <%= f.input :name, :autofocus => true %>
   <%= f.input :email, :required => true %>
+  <%= f.input :disconnect_from_facebook, as: :boolean, label: "Disconnect from Facebook?" %>
+  <%= f.input :send_new_thing_notification, hint: "Receive email notifications when new Things are added?", label: "Email Alert" %>
   <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
   <%= f.input :password_confirmation, :required => false %>
   <%= f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true %>
+  
+  
   <div class="form-actions">
     <%= f.button :submit, 'Update', :class => 'btn-primary' %>
     <%= link_to("Connect with Facebook", oauth_user_path("me"), class: 'btn btn-danger') if resource.facebook_access_token.blank? %>
