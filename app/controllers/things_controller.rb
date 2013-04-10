@@ -39,7 +39,7 @@ class ThingsController < InheritedResources::Base
   end
   
   def set_comparison_thing
-    @comparison_thing = Thing.find(params[:comparison_thing_id]) if params[:comparison_thing_id].present?
+    @comparison_thing = Thing.joins{ assigned_things }.where{ assigned_things.id == my{params[:comparison_thing_id]} }.limit(1).first if params[:comparison_thing_id].present?
     @user = User.find(params[:user_id]) if params[:user_id].present?
   end
   
