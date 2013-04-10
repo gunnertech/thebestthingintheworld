@@ -6,8 +6,6 @@ class AssignedThingsController < InheritedResources::Base
   
   skip_load_and_authorize_resource only: [:move_up,:index]
   
-  
-  
   def move_up
     authorize! :move_up, resource
     resource.comparision = AssignedThing.find_by_id(params[:compared_to]) if params[:compared_to].present?

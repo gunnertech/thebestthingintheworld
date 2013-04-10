@@ -13,7 +13,8 @@ class ThingsController < InheritedResources::Base
   end
   
   def update
-    update!(notice: "Thanks for the update. Bare with us while we process the changes. It may take a few minutes to spread throughout the entire application."){ user_assigned_things_comparision_url("me",page: (Thing.count - resource.position).to_s) }
+    @random_thing_1 = Thing.where{ id >= my{rand(Thing.count)} }.reorder{ id.asc }.first
+    update!(notice: "Thanks for the update. Bare with us while we process the changes. It may take a few minutes to spread throughout the entire application."){ user_assigned_things_comparision_url("me",first_thing_id: resource.id, second_thing_id: @random_thing_1.id) }
   end
   
   protected
