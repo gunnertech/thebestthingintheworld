@@ -3,8 +3,8 @@ class Thing < ActiveRecord::Base
   acts_as_list
   has_paper_trail
   has_attached_file :image, 
-                    :styles => { :small => "196x196", :medium => "600x400", :large => "1200x800"},
-                    :convert_options => { :small => "-crop 196x196+0+0", :medium => "-crop 600x400+0+0", :large => "-crop 1200x800+0+0" },
+                    :styles => { :small => "196x196", :medium => "600x450", :large => "1024x768"},
+                    :convert_options => { :small => "-crop 196x196+0+0", :medium => "-crop 600x450+0+0", :large => "-crop 1024x768+0+0" },
                     :storage => :s3,
                     :s3_credentials => File.join(Rails.root, 'config', 's3.yml'),
                     :path => ':attachment/:id/:style.:extension',
@@ -127,7 +127,8 @@ class Thing < ActiveRecord::Base
   
   class << self
     def suggested_images(term='coffee')
-      url = "https://www.google.com/search?q=#{URI.escape(term)}&hl=en&source=lnms&tbm=isch&sa=X&ei=BE9gUdG3HYmc9QSzmYH4Dg&ved=0CAcQ_AUoAQ&biw=1270&bih=735"
+      url = "https://www.google.com/search?q=#{URI.escape(term)}&hl=en&biw=1389&bih=800&tbm=isch&source=lnt&tbs=isz:ex,iszw:1200,iszh:800&sa=X&ei=6fVlUfalEpHK9gS8hoHgBA&ved=0CCwQpwUoBQ#q=#{URI.escape(term)}&hl=en&tbs=iszw:1200,iszh:800,isz:lt,islt:xga&tbm=isch&source=lnt&sa=X&ei=BvZlUcDnG4fu9ATjoIGIDw&ved=0CCIQpwU&bav=on.2,or.r_cp.r_qf.&bvm=bv.45107431,d.eWU&fp=469a30c85ca8a294&biw=1389&bih=734"
+      #url = "https://www.google.com/search?q=#{URI.escape(term)}&hl=en&source=lnms&tbm=isch&sa=X&ei=BE9gUdG3HYmc9QSzmYH4Dg&ved=0CAcQ_AUoAQ&biw=1270&bih=735"
       a = Mechanize.new { |agent| agent.user_agent_alias = 'Mac Safari' }
       image_urls = []
 

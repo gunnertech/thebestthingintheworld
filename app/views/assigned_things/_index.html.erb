@@ -13,22 +13,29 @@
   </h1>
 </div>
 
-<% @assigned_things.each do |assigned_thing| %>
-  <div class="row-fluid">
-    <div class="alert alert-block clearfix">
-      <div class="span1"><%= link_to(image_tag(assigned_thing.thing.image.url(:small)), assigned_thing.thing) %></div>
-      <div class="span5"><h3><%= link_to "##{assigned_thing.position}", assigned_thing.thing %> - <%= link_to assigned_thing.thing.name, assigned_thing.thing %></h3></div>
-      <div class="span6">
-        <h3>
-        <% if assigned_thing.position == 1 %>
-        <% elsif can? :move_up, assigned_thing %>
-          <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
-        <% end %>
-        </h3>
-      </div>
-    </div>
-  </div>
-<% end %>
-
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Thing</th>
+      <th>Overall</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @assigned_things.each do |assigned_thing| %>
+      <tr>
+        <td><%= assigned_thing.position %></td>
+        <td><%= link_to assigned_thing, assigned_thing %></td>
+        <td><%= assigned_thing.thing.average_position %></td>
+        <td>
+          <% if can?(:move_up, assigned_thing) && assigned_thing.position > 1 %>
+            <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= will_paginate collection %>

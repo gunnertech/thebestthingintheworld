@@ -16,7 +16,7 @@
         <tr>
           <td><%= link_to thing["name"], thing_path(thing["id"]) %></td>
           <td class="text">
-            is now ranked #<%= thing['average_position'].to_i %> at <time class="convert"><%=l version.created_at %></time>
+            is now ranked #<%= thing['average_position'].to_f.ceil.to_i %> at <time class="convert"><%=l version.created_at %></time>
           </td>
         </tr>
       <% end %>
