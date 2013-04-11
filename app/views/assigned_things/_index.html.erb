@@ -26,7 +26,7 @@
     <% @assigned_things.each do |assigned_thing| %>
       <tr data-object-url="<%= move_up_user_assigned_thing_path("me",assigned_thing) %>">
         <td><%= assigned_thing.position %></td>
-        <td><%= link_to assigned_thing, assigned_thing %></td>
+        <td><%= link_to assigned_thing.thing, assigned_thing.thing %></td>
         <td><%= assigned_thing.thing.average_position %></td>
         <td>
           <% if can?(:move_up, assigned_thing) && assigned_thing.position > 1 %>
