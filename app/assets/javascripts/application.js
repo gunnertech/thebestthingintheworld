@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require jquery-ui
+//= require touch-drag
 //= require_tree .
