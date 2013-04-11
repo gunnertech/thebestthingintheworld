@@ -4,6 +4,8 @@ class AssignedThingsController < InheritedResources::Base
   
   custom_actions resource: :move_up
   
+  respond_to :json, only: [:move_up]
+  
   skip_load_and_authorize_resource only: [:move_up,:index]
   
   def move_up
@@ -12,12 +14,18 @@ class AssignedThingsController < InheritedResources::Base
     current_position = resource.position
     if resource.comparision && resource.comparision.position + 1 != resource.position
       resource.insert_at(resource.comparision.position)
+    elsif params[:position].present?
+      resource.insert_at(params[:position].to_i)
     else
       resource.move_higher
     end
     
     flash[:notice] = "You moved that thing up! Good for you!"
-    redirect_to params[:return_to].present? ? params[:return_to] : user_assigned_things_comparision_url("me",first_thing_id: resource.thing_id, second_thing_id: resource.higher_item.thing_id)
+    respond_to do |format|
+      format.html { redirect_to(params[:return_to].present? ? params[:return_to] : user_assigned_things_comparision_url("me",first_thing_id: resource.thing_id, second_thing_id: resource.higher_item.thing_id)) }
+      format.json { render json: resource }
+    end
+    
   end
   
   def create

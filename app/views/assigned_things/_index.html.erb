@@ -22,15 +22,15 @@
       <th></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="sortable">
     <% @assigned_things.each do |assigned_thing| %>
-      <tr>
+      <tr data-object-url="<%= move_up_user_assigned_thing_path("me",assigned_thing) %>">
         <td><%= assigned_thing.position %></td>
         <td><%= link_to assigned_thing, assigned_thing %></td>
         <td><%= assigned_thing.thing.average_position %></td>
         <td>
           <% if can?(:move_up, assigned_thing) && assigned_thing.position > 1 %>
-            <%= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary' %>
+            <%#= link_to "<span class=\"icon icon-arrow-up\"></span> Move Up".html_safe, move_up_user_assigned_thing_path("me",assigned_thing, return_to: request.url), method: "put", class: 'btn btn-primary btn-mini' %>
           <% end %>
         </td>
       </tr>
