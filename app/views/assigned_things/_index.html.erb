@@ -13,7 +13,7 @@
   </h1>
 </div>
 
-<table class="table table-striped">
+<table class="table table-striped" style="height: 2000px;">
   <thead>
     <tr>
       <th>#</th>
@@ -22,7 +22,7 @@
       <th></th>
     </tr>
   </thead>
-  <tbody class="sortable">
+  <tbody id="assigned-things-rows" class="sortable">
     <% @assigned_things.each do |assigned_thing| %>
       <tr data-object-url="<%= move_up_user_assigned_thing_path("me",assigned_thing) %>">
         <td><%= assigned_thing.position %></td>

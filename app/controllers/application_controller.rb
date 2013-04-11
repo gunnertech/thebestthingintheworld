@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  layout Proc.new { |controller| controller.request.xhr? ? false : 'application' }
   load_and_authorize_resource except: :index, :unless => :devise_controller?
   protect_from_forgery
   

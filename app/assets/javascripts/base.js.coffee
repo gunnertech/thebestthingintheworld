@@ -1,5 +1,25 @@
 $(->
   
+  scroll_page = 1
+  $('.assigned_things .pagination').waypoint
+    handler: ->
+      scroll_page += 1
+      $.ajax(
+        location.href
+        data: "page=#{scroll_page}"
+        dataType: 'html'
+      ).done( (html,status,event) ->
+        
+        $('#assigned-things-rows').append(
+          $("<div>#{html}</div>").find('#assigned-things-rows').html()
+        )
+        
+        $('.pagination').html(
+          $("<div>#{html}</div>").find('.pagination').html()
+        )
+      )
+    offset: '90%'
+  
   $(".sortable" ).sortable(axis: "y", 
     helper: (e, ui) ->
       ui.children().each( ->
