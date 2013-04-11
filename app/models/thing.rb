@@ -3,8 +3,8 @@ class Thing < ActiveRecord::Base
   acts_as_list
   has_paper_trail
   has_attached_file :image, 
-                    :styles => { :small => "196x196^", :medium => "600x450^", :large => "1024x768^"},
-                    :convert_options => { :small => "-crop 196x196+0+0 -quality 75 -strip", :medium => "-crop 600x450+0+0 -quality 75 -strip", :large => "-crop 1024x768+0+0 -quality 75 -strip" },
+                    :styles => { :small => "196x196^", :medium => "600x338^", :large => "1024x576^"},
+                    :convert_options => { :small => "-gravity North -crop 196x196+0+0 -quality 75 -strip", :medium => "-gravity North -crop 600x338+0+0 -quality 75 -strip", :large => "-gravity North -crop 1024x576+0+0 -quality 75 -strip" },
                     :storage => :s3,
                     :s3_credentials => File.join(Rails.root, 'config', 's3.yml'),
                     :path => ':attachment/:id/:style.:extension',
