@@ -18,6 +18,8 @@ $(->
           $('.pagination').html(
             $("<div>#{html}</div>").find('.pagination').html()
           )
+          
+          $.waypoints('refresh')
         )
     offset: 'bottom-in-view'
   
