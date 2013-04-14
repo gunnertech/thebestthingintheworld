@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     name
   end
   
+  def assigned_thing_for(thing)
+    assigned_things.where{ thing_id == my{thing.id}}.first
+  end
+  
   def set_up_assigned_things
     Thing.find_in_batches do |group|
       sleep(1)

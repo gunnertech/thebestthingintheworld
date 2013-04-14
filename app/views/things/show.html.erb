@@ -10,12 +10,54 @@
     <% elsif signed_in? %>
       <span class="label label-inverse">Your Ranking: <%= resource.assigned_things.where{ user_id == my{current_user.id}}.first.position %></span>
     <% end %>
+    <% if can?(:update, resource) || can?(:destroy, resource) %>
+      <div class="btn-group">
+        <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                    edit_thing_path(@thing), :class => 'btn btn-danger' if can?(:update, resource) %>
+        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                    thing_path(@thing),
+                    :method => 'delete',
+                    :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                    :class => 'btn btn-danger' if can?(:destroy, resource) %>
+      </div>
+    <% end %>
   </div>
 </div>
 
-<%= simple_form_for resource, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :tag_list %>
-<% end %>
+<div class="row-fluid">
+  <div class="span6">
+    <% if can?(:update, resource) %>
+      <%= simple_form_for resource, :html => { :class => 'form-horizontal' } do |f| %>
+        <div class="row-fluid">
+          <div class="span9">
+            <%= f.input :tag_list %>
+          </div>
+          <div class="span3">
+            <%= f.button :submit, :class => 'btn-primary', value: "Set Tags" %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if signed_in? %>
+      <%= simple_form_for [current_user,current_user.assigned_thing_for(resource)], :html => { :class => 'form-horizontal' } do |f| %>
+        <div class="row-fluid">
+          <div class="span9">
+            <%= f.input :new_position, hint: "Between 1 and #{Thing.count}", input_html: {value: f.object.position} %> 
+          </div>
+          <div class="span3">
+            <%= hidden_field_tag :return_to, request.url %>
+            <%= f.button :submit, :class => 'btn-primary', value: "Set Position" %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class="span6">
+    <%= image_tag resource.image.url %>
+  </div>
+</div>
 
 <h2>History</h2>
 
@@ -38,15 +80,3 @@
     <% end %>
   </tbody>
 </table>
-
-<% if can?(:update, resource) || can?(:destroy, resource) %>
-  <div class="form-actions">
-    <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                edit_thing_path(@thing), :class => 'btn' if can?(:update, resource) %>
-    <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                thing_path(@thing),
-                :method => 'delete',
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                :class => 'btn btn-danger' if can?(:destroy, resource) %>
-  </div>
-<% end %>

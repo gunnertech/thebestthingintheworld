@@ -33,7 +33,10 @@ class AssignedThingsController < InheritedResources::Base
   end
   
   def update
-    update!{ assigned_things_comparision_url(page: (AssignedThing.count - resource.position).to_s) }
+    update! do |success,failure|
+      success.html { redirect_to(params[:return_to].present? ? params[:return_to] : resource_url)}
+      failure.html { redirect_to(resource.thing) }
+    end
   end
   
   def index

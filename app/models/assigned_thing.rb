@@ -2,13 +2,15 @@ class AssignedThing < ActiveRecord::Base
   belongs_to :thing, dependent: :destroy
   belongs_to :user, dependent: :destroy
   
-  attr_accessible :thing, :user
-  attr_accessor :comparision
+  attr_accessible :thing, :user, :new_position
+  attr_accessor :comparision, :new_position
   
   acts_as_list scope: :user
   
   after_update :update_things_average_position
   after_save :queue_for_facebook, if: Proc.new{ |assigned_thing| assigned_thing.user.facebook_access_token }
+  
+  before_validation :move_position, if: Proc.new{ |assigned_thing| assigned_thing.new_position.present? }
   
   validates :thing_id, uniqueness: {scope: :user_id}
   
@@ -37,4 +39,13 @@ class AssignedThing < ActiveRecord::Base
   end
   handle_asynchronously :post_to_facebook
   
+  def move_position
+    if new_position.to_i > Thing.count
+      errors.add(:new_position, "can't be greater than #{Thing.count}")
+    elsif new_position.to_i < 1
+      errors.add(:new_position, "can't be less than than 1")
+    else
+      insert_at(new_position.to_i)
+    end
+  end  
 end
