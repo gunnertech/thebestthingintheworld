@@ -1,4 +1,33 @@
 $(->
+  
+  $modal = $('#email-modal')
+  
+  $modal.on('shown', ->
+    unless $modal.data('binded')
+      $modal.data('binded',true)
+      $modal.find('.modal-footer .btn-danger').on('click', (event) ->
+        event.preventDefault()
+        $modal.modal('hide')
+      )
+    
+      $modal.find('.modal-footer .btn-primary').on('click', (event) ->
+        event.preventDefault()
+        unless $modal.find('form').attr('action').match(/json/)
+          $modal.find('form').attr('action',"#{$modal.find('form').attr('action')}.json")
+        $modal.find('form').trigger('submit')
+        $modal.modal('hide')
+      )
+  )
+  
+  $('.btn-email-share').on('click', (event) ->
+    event.preventDefault()
+    
+    $modal.modal('show')
+    #$modal.find('.modal-body').html("Hell Nah")
+    #$modal.find('h3').html($(this).text())
+  )
+  
+  
   $('.btn-share').click( (event) -> 
     event.preventDefault()
     $('.share-url').show()

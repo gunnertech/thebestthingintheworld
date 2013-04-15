@@ -83,7 +83,7 @@
       </div>
       
       <div class="btn-group span4">
-        <%= link_to "<span class=\"icon icon-envelope\"></span> Email".html_safe, user_assigned_things_comparision_path("me",page: (rand(Thing.count) + 1).to_s), class: 'btn btn-danger' %>
+        <%= link_to "<span class=\"icon icon-envelope\"></span> Email".html_safe, user_assigned_things_comparision_path("me",page: (rand(Thing.count) + 1).to_s), class: 'btn btn-danger btn-email-share' %>
         <%= link_to "<span class=\"icon icon-facebook\"></span> Facebook".html_safe, "#", 
             class: 'btn btn-danger btn-facebook-share',
             "data-name" => "#{collection.first.to_s} vs. #{@comparison_collection.try(:first).to_s}",
@@ -96,3 +96,21 @@
   </div>
   
 <% end %>
+
+<div data-width="900" id="email-modal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Share this Matchup!</h3>
+  </div>
+  <div class="modal-body">
+    <%= simple_form_for [current_user,collection.limit(1).first], remote: true, :html => { :class => 'form-horizontal' } do |f| %>
+      <%= f.input :email_addresses, as: "text", input_html: {rows: 5}, hint: "One email address per line" %>
+      <%= f.input :comparision_id, as: :hidden, input_html: {value: @comparison_collection.try(:first).try(:id)} %>
+    <% end %>
+    
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary">Send</a>
+    <a href="#" class="btn btn-danger">Close</a>
+  </div>
+</div>

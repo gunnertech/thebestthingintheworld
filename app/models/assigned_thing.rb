@@ -2,8 +2,8 @@ class AssignedThing < ActiveRecord::Base
   belongs_to :thing, dependent: :destroy
   belongs_to :user, dependent: :destroy
   
-  attr_accessible :thing, :user, :new_position
-  attr_accessor :comparision, :new_position
+  attr_accessible :thing, :user, :new_position, :comparision_id, :email_addresses
+  attr_accessor :comparision, :new_position, :comparision_id, :email_addresses
   
   acts_as_list scope: :user
   
@@ -11,6 +11,7 @@ class AssignedThing < ActiveRecord::Base
   after_save :queue_for_facebook, if: Proc.new{ |assigned_thing| assigned_thing.user.facebook_access_token }
   
   before_validation :move_position, if: Proc.new{ |assigned_thing| assigned_thing.new_position.present? }
+  before_validation :share_via_email, if: Proc.new{ |assigned_thing| assigned_thing.email_addresses.present? }
   
   validates :thing_id, uniqueness: {scope: :user_id}
   
@@ -48,4 +49,9 @@ class AssignedThing < ActiveRecord::Base
       insert_at(new_position.to_i)
     end
   end  
+  
+  def share_via_email
+    thing_2 = AssignedThing.where{ id == my{comparision_id} }.first.try(:thing)
+    ShareMailer.matchup_email(user,thing,thing_2,email_addresses).deliver
+  end
 end

@@ -4,7 +4,7 @@ class AssignedThingsController < InheritedResources::Base
   
   custom_actions resource: :move_up
   
-  respond_to :json, only: [:move_up]
+  respond_to :json, only: [:move_up, :update]
   
   skip_load_and_authorize_resource only: [:move_up,:index]
   
