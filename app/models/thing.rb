@@ -29,7 +29,8 @@ class Thing < ActiveRecord::Base
   
   after_create :add_assigned_things
   after_create :send_notifications
-  after_create :queue_for_facebook, if: Proc.new{ |thing| thing.creator }
+  after_create :queue_for_facebook, if: Proc.new{ |thing| thing.creator && thing.creator.facebook_access_token.present? }
+  after_create :queue_for_twitter, if: Proc.new{ |thing| thing.creator && thing.creator.twitter_access_token.present? }
   
   after_save :download_image, if: Proc.new{ |thing| thing.image_url.present? && thing.image_url_changed? }
   
@@ -118,12 +119,33 @@ class Thing < ActiveRecord::Base
     end
   end
   
+  def queue_for_twitter
+    if image.exists?
+      post_to_twitter(
+        creator.twitter_access_token,
+        creator.twitter_access_secret,
+        Rails.application.routes.url_helpers.thing_url(self, host: ENV['HOST'])
+      )
+    else
+      self.delay.queue_for_twitter
+    end
+  end
   
   def post_to_facebook(token,url)
     graph = Koala::Facebook::API.new(token)
-    graph.put_connections("me", "tbtitworld:add", thing: url)
+    graph.put_connections("me", "tbtitworld:add", thing: url) rescue nil
   end
   handle_asynchronously :post_to_facebook
+  
+  def post_to_twitter(token,secret,url)
+    client = Twitter::Client.new(
+      :oauth_token => token,
+      :oauth_token_secret => secret
+    )
+    
+    client.update("Where do you think #{self.to_s} ranks? #{url}") rescue nil
+  end
+  handle_asynchronously :post_to_twitter
   
   class << self
     def suggested_images(term='coffee')

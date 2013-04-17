@@ -9,6 +9,7 @@ class AssignedThing < ActiveRecord::Base
   
   after_update :update_things_average_position
   after_save :queue_for_facebook, if: Proc.new{ |assigned_thing| assigned_thing.user.facebook_access_token && assigned_thing.position_changed? }
+  after_save :queue_for_twitter, if: Proc.new{ |assigned_thing| assigned_thing.user.twitter_access_token && assigned_thing.position_changed? }
   
   before_validation :move_position, if: Proc.new{ |assigned_thing| assigned_thing.new_position.present? }
   before_validation :share_via_email, if: Proc.new{ |assigned_thing| assigned_thing.email_addresses.present? }
@@ -34,6 +35,29 @@ class AssignedThing < ActiveRecord::Base
       Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:id), host: ENV['HOST'])
     )
   end
+  
+  def queue_for_twitter
+    post_to_twitter(
+      comparision,
+      user.twitter_access_token,
+      user.twitter_access_secret,
+      Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:id), host: ENV['HOST'])
+    )
+  end
+  
+  def post_to_twitter(c,token,secret,url)
+    client = Twitter::Client.new(
+      :oauth_token => token,
+      :oauth_token_secret => secret
+    )
+    if c
+      client.update("#{self.thing.to_s} is better than #{c.to_s} #{url}")
+    else
+      client.update("I moved up #{self.thing.to_s} #{url}")
+    end
+    
+  end
+  handle_asynchronously :post_to_twitter
   
   def post_to_facebook(token,url)
     graph = Koala::Facebook::API.new(token)

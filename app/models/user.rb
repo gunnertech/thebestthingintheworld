@@ -8,14 +8,15 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :role_ids, :as => :admin
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :disconnect_from_facebook, :send_new_thing_notification
-  attr_accessor :disconnect_from_facebook
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :disconnect_from_facebook, :disconnect_from_twitter, :send_new_thing_notification
+  attr_accessor :disconnect_from_facebook, :disconnect_from_twitter
   
   has_many :assigned_things
   has_many :things, through: :assigned_things
   
   after_create :set_up_assigned_things
   before_validation :remove_facebook_token, if: Proc.new{ |user| user.disconnect_from_facebook.present? }
+  before_validation :remove_twitter_token, if: Proc.new{ |user| user.disconnect_from_twitter.present? }
   
   def to_s
     name
@@ -39,6 +40,11 @@ class User < ActiveRecord::Base
   
   def remove_facebook_token
     self.facebook_access_token = nil
+  end
+  
+  def remove_twitter_token
+    self.twitter_access_token = nil
+    self.twitter_access_secret = nil
   end
   
 end

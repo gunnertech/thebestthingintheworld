@@ -7,7 +7,8 @@
   <%= display_base_errors resource %>
   <%= f.input :name, :autofocus => true %>
   <%= f.input :email, :required => true %>
-  <%= f.input :disconnect_from_facebook, as: :boolean, label: "Disconnect from Facebook?" %>
+  <%= f.input :disconnect_from_facebook, as: :boolean, label: "Disconnect from Facebook?" if current_user.try(:facebook_access_token) %>
+  <%= f.input :disconnect_from_twitter, as: :boolean, label: "Disconnect from Twitter?" if current_user.try(:twitter_access_token) %>
   <%= f.input :send_new_thing_notification, hint: "Receive email notifications when new Things are added?", label: "Email Alert" %>
   <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
   <%= f.input :password_confirmation, :required => false %>
