@@ -67,6 +67,8 @@ class UsersController < ApplicationController
       
         @user.twitter_id = client.user[:id]
         @user.name = client.user[:screen_name]
+        @user.password = @user.twitter_access_token
+        @user.email = "#{@user.name}@fake-from-twitter.com"
       end
       
       @user.save!
