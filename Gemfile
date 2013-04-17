@@ -48,3 +48,5 @@ gem "httparty"
 gem 'rest-client'
 gem 'twitter'
 gem "bitly"
+gem "oauth2"
+gem "oauth"

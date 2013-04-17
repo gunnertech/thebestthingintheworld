@@ -16,10 +16,7 @@ Thebestthingintheworld::Application.routes.draw do
   resources :users do
     member do
       get 'oauth'
-    end
-    
-    collection do
-      post 'login_with_facebook'
+      get 'twitter_oauth'
     end
     
     resources :assigned_things do

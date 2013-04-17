@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130417032607) do
+ActiveRecord::Schema.define(:version => 20130417174850) do
 
   create_table "assigned_things", :force => true do |t|
     t.integer  "thing_id"
@@ -98,12 +98,17 @@ ActiveRecord::Schema.define(:version => 20130417032607) do
     t.boolean  "send_new_thing_notification", :default => true, :null => false
     t.string   "facebook_access_token"
     t.integer  "facebook_id"
+    t.string   "twitter_access_token"
+    t.string   "twitter_access_secret"
+    t.integer  "twitter_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_access_token"], :name => "index_users_on_facebook_access_token"
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["twitter_access_token"], :name => "index_users_on_twitter_access_token"
+  add_index "users", ["twitter_id"], :name => "index_users_on_twitter_id"
 
   create_table "users_roles", :id => false, :force => true do |t|
     t.integer "user_id"

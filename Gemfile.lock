@@ -173,6 +173,7 @@ GEM
     net-http-persistent (2.8)
     nokogiri (1.5.9)
     ntlm-http (0.1.1)
+    oauth (0.4.7)
     oauth2 (0.8.1)
       faraday (~> 0.8)
       httpauth (~> 0.1)
@@ -333,6 +334,8 @@ DEPENDENCIES
   less-rails (>= 2.2.6)
   libv8 (>= 3.11.8)
   mechanize
+  oauth
+  oauth2
   paper_trail (~> 2)
   paperclip (~> 3.0)
   pg (>= 0.15.0)

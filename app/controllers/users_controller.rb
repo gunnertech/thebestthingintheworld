@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   # before_filter :authenticate_user!
   
-  skip_load_and_authorize_resource only: [:oauth, :login_with_facebook]
-  skip_before_filter :set_user_id, only: [:oauth]
+  skip_load_and_authorize_resource only: [:oauth, :twitter_oauth]
+  skip_before_filter :set_user_id, only: [:oauth, :twitter_oauth]
   
   def oauth
     @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], oauth_user_url("me"))
@@ -38,13 +38,47 @@ class UsersController < ApplicationController
     end
   end
   
-  def login_with_facebook
-    url = "https://graph.facebook.com/oauth/access_token?client_id=#{ENV['FACEBOOK_APP_ID']}&client_secret=#{ENV['FACEBOOK_APP_SECRET']}&grant_type=fb_exchange_token&fb_exchange_token=#{params[:facebook_access_token]}"
-    response = HTTParty.post(url)
-    raise response.body.split('&').first.gsub(/access_token=/,"")
-    @user = User.where{ facebook_access_token == my{params[:facebook_access_token]} }.first
-    sign_in @user if @user
-    render json: @user
+  def twitter_oauth
+    @consumer = OAuth::Consumer.new(ENV['TWITTER_CONSUMER_KEY'], ENV['TWITTER_CONSUMER_SECRET'],
+    { :site => "https://api.twitter.com",
+      :request_token_path => '/oauth/request_token',
+      :access_token_path => '/oauth/access_token',
+      :authorize_path => '/oauth/authorize',
+      :scheme => :header
+    })
+    
+    if params[:oauth_verifier].present? && params[:oauth_token].present?
+      token = @consumer.get_access_token(session[:request_token],oauth_verifier: params[:oauth_verifier])
+      @user = current_user || User.new
+      @user.twitter_access_token = token.token
+      @user.twitter_access_secret = token.secret
+      
+      if @user.new_record?
+        client = Twitter::Client.new(
+          :oauth_token => @user.twitter_access_token,
+          :oauth_token_secret => @user.twitter_access_secret
+        )
+      
+        if user = User.where{ (twitter_id == my{client.user[:id]}) | (twitter_access_token == my{@user.twitter_access_token}) }.first
+          @user = user
+          @user.twitter_access_token = token.token
+          @user.twitter_access_secret = token.secret
+        end
+      
+        @user.twitter_id = client.user[:id]
+        @user.name = client.user[:screen_name]
+      end
+      
+      @user.save!
+      
+      sign_in @user if !signed_in?
+      
+      redirect_to user_path("me"), notice: "Connected to Twitter!"
+    else
+      @request_token = @consumer.get_request_token(:oauth_callback => "http://#{ENV['HOST']}/users/me/twitter_oauth")
+      session[:request_token] = @request_token
+      redirect_to @request_token.authorize_url
+    end
   end
 
   def index
