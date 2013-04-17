@@ -82,7 +82,7 @@
         </div>
       </div>
       
-      <div class="btn-group span4">
+      <div class="span4">
         <%= link_to "<span class=\"icon icon-envelope\"></span> Email".html_safe, user_assigned_things_comparision_path("me",page: (rand(Thing.count) + 1).to_s), class: 'btn btn-danger btn-email-share' %>
         <%= link_to "<span class=\"icon icon-facebook\"></span> Facebook".html_safe, "#", 
             class: 'btn btn-danger btn-facebook-share',
@@ -90,6 +90,10 @@
             "data-link" => user_assigned_things_comparision_url("me", first_thing_id: collection.first.try(:thing).try(:id), second_thing_id: @comparison_collection.last.try(:thing).try(:id)),
             "data-picture" => collection.first.try(:thing).try(:image).try(:url,:medium)
         %>
+        <div style="height:19px; display:inline-block;">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= user_assigned_things_comparision_url("me", first_thing_id: collection.first.try(:thing).try(:id), second_thing_id: @comparison_collection.last.try(:thing).try(:id)) %>" data-text="What's Better <%= collection.first.try(:thing).to_s %> or <%= @comparison_collection.last.try(:thing).to_s %>? Vote Here!" data-via="tbtitwo" data-size="large">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
       </div>
     </form>
     
