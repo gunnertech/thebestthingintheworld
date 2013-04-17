@@ -16,7 +16,7 @@
   
   <div class="form-actions">
     <%= f.button :submit, 'Update', :class => 'btn-primary' %>
-    <%= link_to("Connect with Facebook", oauth_user_path("me"), class: 'btn btn-danger') if resource.facebook_access_token.blank? %>
+    <%= link_to("<i class=\"icon icon-facebook\"></i> Connect with Facebook".html_safe, oauth_user_path("me"), class: 'btn btn-danger') unless current_user.try(:facebook_access_token) %>
   </div>
 <% end %>
 <h3>Cancel my account</h3>

@@ -10,7 +10,45 @@
       xfbml      : true  // parse XFBML tags on this page?
     });
 
-    // Additional initialization code such as adding Event Listeners goes here
+    // FB.getLoginStatus(function(response) {
+    //   if (response.status === 'connected') {
+    //     //if (!$("body").hasClass('signed_in')) {
+    //       $(".btn-facebook-login").on('click',function(e){
+    //         e.preventDefault();
+    //         console.log(response)
+    //         $.ajax(
+    //           "/users/login_with_facebook",
+    //           { 
+    //             data: "facebook_access_token=" + response.authResponse.accessToken,
+    //             type: 'POST',
+    //             dataType: 'json'
+    //           }
+    //         ).done(function(object,status,e){
+    //           if(object) {
+    //             location.reload();
+    //           }
+    //         });
+    //         // FB.api('/me', function(obj) {
+    //         //   console.log(obj);
+    //         // });
+    //       });
+    //     //}
+    //   } else if (response.status === 'not_authorized') {
+    //     FB.login(function(response) {
+    //       if (response.authResponse) {
+    //         console.log(response)
+    //       } else {
+    //       }
+    //     });
+    //   } else {
+    //     FB.login(function(response) {
+    //       if (response.authResponse) {
+    //         console.log(response)
+    //       } else {
+    //       }
+    //     });
+    //   }
+    // });
 
   };
 

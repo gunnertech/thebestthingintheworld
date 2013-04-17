@@ -302,6 +302,7 @@ DEPENDENCIES
   figaro (>= 0.6.3)
   foreman
   has_scope
+  httparty
   hub (>= 1.10.2)
   inherited_resources
   jquery-rails

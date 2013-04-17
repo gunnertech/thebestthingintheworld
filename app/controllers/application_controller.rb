@@ -16,9 +16,10 @@ class ApplicationController < ActionController::Base
   end
   
   def set_user_id
-    redirect_to new_user_session_path and return false if !signed_in? && params[:user_id] == 'me'
-    
-    params[:user_id] = current_user.id if params[:user_id] == 'me'
+    if !devise_controller?
+      redirect_to new_user_session_path and return false if !signed_in? && params[:user_id] == 'me'
+      params[:user_id] = current_user.id if params[:user_id] == 'me'
+    end
   end
   
 

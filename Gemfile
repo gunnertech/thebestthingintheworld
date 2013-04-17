@@ -44,3 +44,4 @@ gem 'acts-as-taggable-on', '~> 2.3.1'
 gem "mechanize"
 gem "koala"
 gem "possessive"
+gem "httparty"

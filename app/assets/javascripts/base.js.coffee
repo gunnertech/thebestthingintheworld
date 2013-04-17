@@ -1,5 +1,5 @@
 $(->
-  
+
   scroll_page = 1
   $('.assigned_things .pagination').waypoint
     handler: (direction) ->

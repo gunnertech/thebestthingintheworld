@@ -18,6 +18,10 @@ Thebestthingintheworld::Application.routes.draw do
       get 'oauth'
     end
     
+    collection do
+      post 'login_with_facebook'
+    end
+    
     resources :assigned_things do
       member do
         put 'move_up'

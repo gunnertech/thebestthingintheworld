@@ -12,7 +12,7 @@
     <%= yield(:head) %>
     
   </head>
-  <body class="<%= controller_name %> <%= action_name %>">
+  <body class="<%= controller_name %> <%= action_name %> <%= signed_in? ? 'signed_in' : '' %>">
     <%= render partial: "facebook" %>
     <div class="navbar navbar-fixed-top">
       <nav class="navbar-inner">
