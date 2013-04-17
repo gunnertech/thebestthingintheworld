@@ -1,6 +1,7 @@
 $(->
   
   $modal = $('#email-modal')
+  $sms_modal = $('#sms-modal')
   
   $modal.on('shown', ->
     unless $modal.data('binded')
@@ -19,12 +20,33 @@ $(->
       )
   )
   
+  $sms_modal.on('shown', ->
+    unless $sms_modal.data('binded')
+      $sms_modal.data('binded',true)
+      $sms_modal.find('.modal-footer .btn-danger').on('click', (event) ->
+        event.preventDefault()
+        $sms_modal.modal('hide')
+      )
+    
+      $sms_modal.find('.modal-footer .btn-primary').on('click', (event) ->
+        event.preventDefault()
+        unless $sms_modal.find('form').attr('action').match(/json/)
+          $sms_modal.find('form').attr('action',"#{$modal.find('form').attr('action')}.json")
+        $sms_modal.find('form').trigger('submit')
+        $sms_modal.modal('hide')
+      )
+  )
+  
   $('.btn-email-share').on('click', (event) ->
     event.preventDefault()
     
     $modal.modal('show')
-    #$modal.find('.modal-body').html("Hell Nah")
-    #$modal.find('h3').html($(this).text())
+  )
+  
+  $('.btn-sms-share').on('click', (event) ->
+    event.preventDefault()
+    
+    $sms_modal.modal('show')
   )
   
   

@@ -6,7 +6,7 @@ class Ability
     if user.has_role? :admin
       can :manage, :all
     elsif !user.new_record?
-      can [:move_up], AssignedThing, user_id: user.id
+      can [:move_up,:update], AssignedThing, user_id: user.id
       can [:create], Thing
       can :manage, Thing do |thing|
         thing.new_record? || thing.creator == user

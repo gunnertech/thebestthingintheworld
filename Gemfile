@@ -45,3 +45,6 @@ gem "mechanize"
 gem "koala"
 gem "possessive"
 gem "httparty"
+gem 'rest-client'
+gem 'twitter'
+gem "bitly"
