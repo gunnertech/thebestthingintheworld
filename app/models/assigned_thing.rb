@@ -8,7 +8,7 @@ class AssignedThing < ActiveRecord::Base
   acts_as_list scope: :user
   
   after_update :update_things_average_position
-  after_save :queue_for_facebook, if: Proc.new{ |assigned_thing| assigned_thing.user.facebook_access_token }
+  after_save :queue_for_facebook, if: Proc.new{ |assigned_thing| assigned_thing.user.facebook_access_token && assigned_thing.position_changed? }
   
   before_validation :move_position, if: Proc.new{ |assigned_thing| assigned_thing.new_position.present? }
   before_validation :share_via_email, if: Proc.new{ |assigned_thing| assigned_thing.email_addresses.present? }
@@ -37,7 +37,7 @@ class AssignedThing < ActiveRecord::Base
   
   def post_to_facebook(token,url)
     graph = Koala::Facebook::API.new(token)
-    graph.put_connections("me", "tbtitworld:like", thing: url)
+    graph.put_connections("me", "tbtitworld:like", thing: url) rescue nil
   end
   handle_asynchronously :post_to_facebook
   
@@ -57,9 +57,11 @@ class AssignedThing < ActiveRecord::Base
   end
   handle_asynchronously :share_via_email
   
-  def share_via_sms
-    if ENV['BLOWERIO_URL']
-      thing_2 = AssignedThing.where{ id == my{comparision_id} }.first.try(:thing)
+  def share_via_sms(mobile_number = nil, c_id = nil)
+    if mobile_number.nil?
+      self.delay.share_via_sms(phone_number,comparision_id)
+    elsif ENV['BLOWERIO_URL']
+      thing_2 = AssignedThing.where{ id == my{c_id} }.first.try(:thing)
       
       Bitly.use_api_version_3
       bitly = Bitly.new("gunnertech", "R_b75c09fa28aa15f9e53ccb9245a9acf6")
@@ -68,17 +70,17 @@ class AssignedThing < ActiveRecord::Base
       
       body = "#{user.name} wants to know what you think is better: #{thing.to_s} or #{thing_2.to_s} - #{u.short_url}"
       
-      useable_number = ActionController::Base.helpers.number_to_phone(phone_number.gsub(/\D/,""))
+      useable_number = ActionController::Base.helpers.number_to_phone(mobile_number.gsub(/\D/,""))
       if useable_number.length == 12
         useable_number = "+1#{useable_number.gsub(/\D/,"")}"
       else
         useable_number = "+#{useable_number.gsub(/\D/,"")}"
       end
-      
-      blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
-      #blowerio['/messages'].post to: "+18609404747", message: "hi"
-      blowerio['/messages'].post :to => useable_number, :message => body[0..159]
+      blower_url = "https://7f689c2e-8e44-4efb-83f6-9e950ba58662:kcE1EcCuSvxHYFthePeLkw@api.blower.io/"
+      #blower_url = ENV['BLOWERIO_URL']
+      blowerio = RestClient::Resource.new(blower_url)
+      blowerio['/messages'].post :to => useable_number, :message => body
     end
   end
-  handle_asynchronously :share_via_sms
+  #handle_asynchronously :share_via_sms
 end
