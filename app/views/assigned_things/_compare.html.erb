@@ -18,8 +18,8 @@
   <% end %>
   
   <div class="row-fluid facebook-row btn-group">
-    <%= link_to("<i class=\"icon icon-facebook\"></i> Connect with Facebook".html_safe, oauth_user_path("me"), class: 'btn btn-danger btn-large span12') unless current_user.try(:facebook_access_token) %>
-    <%= link_to("<i class=\"icon icon-twitter\"></i> Connect with Twitter".html_safe, twitter_oauth_user_path("me"), class: 'btn btn-danger btn-large span12') unless current_user.try(:twitter_access_token) %>
+    <%= link_to("<i class=\"icon icon-facebook\"></i> Connect with Facebook".html_safe, oauth_user_path("me"), class: 'btn btn-danger btn-large span6') unless current_user.try(:facebook_access_token) %>
+    <%= link_to("<i class=\"icon icon-twitter\"></i> Connect with Twitter".html_safe, twitter_oauth_user_path("me"), class: 'btn btn-danger btn-large span6') unless current_user.try(:twitter_access_token) %>
   </div>
 
   <div class="row-fluid">
