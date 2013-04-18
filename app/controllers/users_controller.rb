@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def oauth
     @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], oauth_user_url("me"))
     if params[:client_id].present? || params[:code].present?
-      facebook_session = KoalaAdapter.get_full_info_from_cookies(cookies)
+      facebook_session = @oauth.try(:get_user_info_from_cookies, cookies) || {}
       @user = current_user || User.new
       @user.facebook_access_token = facebook_session["access_token"] || @oauth.get_access_token(params[:code])
       
@@ -26,6 +26,7 @@ class UsersController < ApplicationController
         @user.facebook_id = profile["id"]
       elsif !@user.facebook_id
         @graph = Koala::Facebook::API.new(@user.facebook_access_token)
+        profile = @graph.get_object("me")
         @user.facebook_id = profile["id"]
       end
       

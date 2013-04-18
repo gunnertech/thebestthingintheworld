@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
   has_many :things, through: :assigned_things
   
   after_create :set_up_assigned_things
-  before_validation :remove_facebook_token, if: Proc.new{ |user| user.disconnect_from_facebook.present? }
-  before_validation :remove_twitter_token, if: Proc.new{ |user| user.disconnect_from_twitter.present? }
+  before_validation :remove_facebook_token, if: Proc.new{ |user| user.disconnect_from_facebook == "1" }
+  before_validation :remove_twitter_token, if: Proc.new{ |user| user.disconnect_from_twitter == "1" }
   
   def to_s
     name
