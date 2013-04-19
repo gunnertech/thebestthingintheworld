@@ -11,8 +11,9 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :disconnect_from_facebook, :disconnect_from_twitter, :send_new_thing_notification
   attr_accessor :disconnect_from_facebook, :disconnect_from_twitter
   
-  has_many :assigned_things
+  has_many :assigned_things, dependent: :destroy
   has_many :things, through: :assigned_things
+  has_many :picked_matchups, dependent: :destroy
   
   after_create :set_up_assigned_things
   before_validation :remove_facebook_token, if: Proc.new{ |user| user.disconnect_from_facebook == "1" }

@@ -47,9 +47,13 @@ class AssignedThingsController < InheritedResources::Base
       else
         @comparison_collection = parent.assigned_things.joins{ thing }.where{ thing.id == my{ params[:second_thing_id]} }
       end
+      
+      @random_thing_1 = Thing.where{ id >= my{rand(Thing.count)} }.reorder{ id.asc }.first
+      @random_thing_2 = Thing.where{ id >= my{rand(Thing.count)} }.reorder{ id.asc }.first
+
+      Matchup.set_up_for(@random_thing_1,@random_thing_2)
+      Matchup.set_up_for(collection.first.try(:thing),@comparison_collection.first.try(:thing))
     end
-    @random_thing_1 = Thing.where{ id >= my{rand(Thing.count)} }.reorder{ id.asc }.first
-    @random_thing_2 = Thing.where{ id >= my{rand(Thing.count)} }.reorder{ id.asc }.first
     
     index!
   end

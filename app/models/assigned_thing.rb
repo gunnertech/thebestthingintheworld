@@ -15,12 +15,19 @@ class AssignedThing < ActiveRecord::Base
   before_validation :share_via_email, if: Proc.new{ |assigned_thing| assigned_thing.email_addresses.present? }
   before_validation :share_via_sms, if: Proc.new{ |assigned_thing| assigned_thing.phone_number.present? }
   
+  after_save :create_picked_matchup, if: Proc.new{ |assigned_thing| assigned_thing.comparision.present? }
+  
   validates :thing_id, uniqueness: {scope: :user_id}
   
   default_scope order{ position.asc }
   
   def to_s
     thing.to_s
+  end
+  
+  def create_picked_matchup
+    matchup = Matchup.set_up_for(thing,comparision.thing)
+    user.picked_matchups.create!(matchup: matchup, thing: thing)
   end
   
   def update_things_average_position
@@ -32,7 +39,7 @@ class AssignedThing < ActiveRecord::Base
   def queue_for_facebook
     post_to_facebook(
       user.facebook_access_token,
-      Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:id), host: ENV['HOST'])
+      Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:thing).try(:id), host: ENV['HOST'])
     )
   end
   
@@ -41,7 +48,7 @@ class AssignedThing < ActiveRecord::Base
       comparision,
       user.twitter_access_token,
       user.twitter_access_secret,
-      Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:id), host: ENV['HOST'])
+      Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:thing).try(:id), host: ENV['HOST'])
     )
   end
   
@@ -106,5 +113,5 @@ class AssignedThing < ActiveRecord::Base
       blowerio['/messages'].post :to => useable_number, :message => body
     end
   end
-  #handle_asynchronously :share_via_sms
+  handle_asynchronously :share_via_sms
 end

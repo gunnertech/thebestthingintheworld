@@ -1,4 +1,10 @@
 Thebestthingintheworld::Application.routes.draw do
+  resources :picked_matchups
+
+
+  resources :matchups
+
+
   resources :assigned_things
   
   match 'privacy-policy' => 'home#privacy_policy', :via => [:get], as: :privacy_policy

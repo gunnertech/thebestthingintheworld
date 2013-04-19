@@ -1,0 +1,53 @@
+<%- model_class = Matchup -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Wins</th>
+      <% if signed_in? %>
+        <th>Your #</th>
+      <% end %>
+      <th>Avg</th>
+      <th></th>
+      <th>Wins</th>
+      <% if signed_in? %>
+        <th>Your #</th>
+      <% end %>
+      <th>Avg</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @matchups.each do |matchup| %>
+      <tr class="<%= matchup.featured? ? 'warning' : '' %>">
+        <td><%= link_to matchup.thing_1, matchup.thing_1 %></td>
+        <td><%= matchup.wins_for(matchup.thing_1) %></td>
+        <% if signed_in? %>
+          <td><%= matchup.thing_1.rank_for(current_user) %></td>
+        <% end %>
+        <td><%= matchup.thing_1.average_position %></td>
+        <td><%= link_to matchup.thing_2, matchup.thing_2 %></td>
+        <td><%= matchup.wins_for(matchup.thing_2) %></td>
+        <% if signed_in? %>
+          <td><%= matchup.thing_2.rank_for(current_user) %></td>
+        <% end %>
+        <td><%= matchup.thing_2.average_position %></td>
+        <td>
+          <%= link_to "View", user_assigned_things_comparision_path("me",first_thing_id: matchup.thing_1_id, second_thing_id: matchup.thing_2_id), class: "btn btn-mini" %>
+          <% if can? :update, matchup %>
+            <% if matchup.featured? %>
+              <%= link_to 'Un-Feature', matchup_path(matchup, matchup: {featured: false}), method: 'put', :class => 'btn btn-mini btn-danger' %>
+            <% else %>
+              <%= link_to 'Feature', matchup_path(matchup, matchup: {featured: true}), method: 'put', :class => 'btn btn-mini btn-primary' %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate collection %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130417174850) do
+ActiveRecord::Schema.define(:version => 20130419005632) do
 
   create_table "assigned_things", :force => true do |t|
     t.integer  "thing_id"
@@ -39,6 +39,30 @@ ActiveRecord::Schema.define(:version => 20130417174850) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "matchups", :force => true do |t|
+    t.integer  "thing_1_id"
+    t.integer  "thing_2_id"
+    t.boolean  "featured",   :default => false, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "matchups", ["featured"], :name => "index_matchups_on_featured"
+  add_index "matchups", ["thing_1_id"], :name => "index_matchups_on_thing_1_id"
+  add_index "matchups", ["thing_2_id"], :name => "index_matchups_on_thing_2_id"
+
+  create_table "picked_matchups", :force => true do |t|
+    t.integer  "matchup_id"
+    t.integer  "thing_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "picked_matchups", ["matchup_id"], :name => "index_picked_matchups_on_matchup_id"
+  add_index "picked_matchups", ["thing_id"], :name => "index_picked_matchups_on_thing_id"
+  add_index "picked_matchups", ["user_id"], :name => "index_picked_matchups_on_user_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name"

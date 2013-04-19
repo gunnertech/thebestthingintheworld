@@ -1,0 +1,40 @@
+<%- model_class = PickedMatchup -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:matchup_id) %></th>
+      <th><%= model_class.human_attribute_name(:thing_id) %></th>
+      <th><%= model_class.human_attribute_name(:user_id) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @picked_matchups.each do |picked_matchup| %>
+      <tr>
+        <td><%= link_to picked_matchup.id, picked_matchup_path(picked_matchup) %></td>
+        <td><%= picked_matchup.matchup_id %></td>
+        <td><%= picked_matchup.thing_id %></td>
+        <td><%= picked_matchup.user_id %></td>
+        <td><%=l picked_matchup.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_picked_matchup_path(picked_matchup), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      picked_matchup_path(picked_matchup),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_picked_matchup_path,
+            :class => 'btn btn-primary' %>

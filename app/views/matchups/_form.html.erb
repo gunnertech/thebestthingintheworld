@@ -1,0 +1,10 @@
+<%= simple_form_for @matchup, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :thing_1_id %>
+  <%= f.input :thing_2_id %>
+  <%= f.input :featured %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                matchups_path, :class => 'btn' %>
+  </div>
+<% end %>

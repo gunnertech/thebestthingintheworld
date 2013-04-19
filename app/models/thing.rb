@@ -34,6 +34,8 @@ class Thing < ActiveRecord::Base
   
   after_save :download_image, if: Proc.new{ |thing| thing.image_url.present? && thing.image_url_changed? }
   
+  after_destroy :destroy_matchups
+  
   
   before_image_post_process do |thing|
     if !thing.image_processing? && thing.image_changed?
@@ -53,8 +55,16 @@ class Thing < ActiveRecord::Base
     self.image.reprocess!
   end
   
+  def matchups
+    Matchup.where{ (thing_1_id == my{id}) | (thing_2_id == my{id}) }
+  end
+  
   def to_s
     name
+  end
+  
+  def rank_for(user)
+    user.assigned_things.where{ thing_id == my{id}}.first.position
   end
   
   def to_param
@@ -163,5 +173,9 @@ class Thing < ActiveRecord::Base
       
       image_urls
     end
+  end
+  
+  def destroy_matchups
+    matchups.destroy_all
   end
 end
