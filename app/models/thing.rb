@@ -155,7 +155,11 @@ class Thing < ActiveRecord::Base
     self.wins = self.raw_wins
     self.losses = self.raw_losses
     self.appearances = self.matchups.count.to_f
-    self.win_percentage = self.wins.to_f/self.appearances.to_f if self.appearances > 0
+    if self.appearances > 0
+      self.win_percentage = self.wins.to_f/self.appearances.to_f
+    else
+      self.win_percentage = 0
+    end
   end
   
   def post_to_facebook(token,url)
