@@ -89,8 +89,9 @@ class AssignedThing < ActiveRecord::Base
   handle_asynchronously :share_via_email
   
   def share_via_sms(mobile_number = nil, c_id = nil)
-    if mobile_number.nil?
-      self.delay.share_via_sms(phone_number,comparision_id)
+    if mobile_number.blank?
+      Rails.logger.warn("^^^^#{self.phone_number}")
+      self.delay.share_via_sms(self.phone_number,comparision_id) unless self.phone_number.blank?
     elsif ENV['BLOWERIO_URL']
       thing_2 = AssignedThing.where{ id == my{c_id} }.first.try(:thing)
       
