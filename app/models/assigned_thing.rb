@@ -107,8 +107,8 @@ class AssignedThing < ActiveRecord::Base
       else
         useable_number = "+#{useable_number.gsub(/\D/,"")}"
       end
-      blower_url = "https://7f689c2e-8e44-4efb-83f6-9e950ba58662:kcE1EcCuSvxHYFthePeLkw@api.blower.io/"
-      #blower_url = ENV['BLOWERIO_URL']
+      
+      blower_url = ENV['BLOWERIO_URL']
       blowerio = RestClient::Resource.new(blower_url)
       blowerio['/messages'].post :to => useable_number, :message => body
     end
