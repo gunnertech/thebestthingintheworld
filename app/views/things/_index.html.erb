@@ -26,7 +26,7 @@
         <td class="<%= sort_class('name') %>"><%= link_to thing, thing %></td>
         <td class="<%= sort_class('wins') %>"><%= thing.wins %></td>
         <td class="<%= sort_class('losses') %>"><%= thing.losses %></td>
-        <td class="<%= sort_class('win_percentage') %>"><%= number_to_percentage 100*thing.win_percentage, precision: 1 %></td>
+        <td class="<%= sort_class('win_percentage') %>"><%= number_to_percentage( 100*(thing.win_percentage||0), precision: 1) %></td>
         <td class="<%= sort_class('average_position') %>"><%= thing.average_position %></td>
         <% if signed_in? %>
           <td><%= thing.rank_for(current_user) %></td>

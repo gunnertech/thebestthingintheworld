@@ -6,7 +6,7 @@
       <small>(#<%= resource.average_position %> of <%= Thing.count %> )</small>
     </div>
     <div class="span6">
-      <%= number_to_percentage(100*resource.win_percentage, :precision => 1) %>
+      <%= number_to_percentage(100*(resource.win_percentage||0), :precision => 1) %>
       <small>(<%= resource.wins %> W - <%= resource.losses %> L)</small>
     </div>
   </h1>
