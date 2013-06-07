@@ -4,9 +4,39 @@
 </div>
 
 <div class="page-header">
-  <h1>Leaderboard</h1>
+  <h1>Standings</h1>
 </div>
 
+<table class="table table-striped table-hover table-condensed">
+  <thead>
+    <tr>
+      <th><%= sort_link "Name", 'name' %></th>
+      <th><%= sort_link "Wins", 'wins' %></th>
+      <th><%= sort_link "Losses", 'losses' %></th>
+      <th><%= sort_link "%", 'win_percentage' %></th>
+      <th><%= sort_link "Avg #", 'average_position' %></th>
+      <% if signed_in? %>
+        <th>Your #</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @things.each do |thing| %>
+      <tr>
+        <td class="<%= sort_class('name') %>"><%= link_to thing, thing %></td>
+        <td class="<%= sort_class('wins') %>"><%= thing.wins %></td>
+        <td class="<%= sort_class('losses') %>"><%= thing.losses %></td>
+        <td class="<%= sort_class('win_percentage') %>"><%= number_to_percentage 100*thing.win_percentage, precision: 1 %></td>
+        <td class="<%= sort_class('average_position') %>"><%= thing.average_position %></td>
+        <% if signed_in? %>
+          <td><%= thing.rank_for(current_user) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- 
 <% @things.each do |thing| %>
   <div class="row-fluid">
     <div class="alert alert-block clearfix">
@@ -19,6 +49,6 @@
       </div>
     </div>
   </div>
-<% end %>
+<% end %> -->
 
 <%= will_paginate collection %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130419005632) do
+ActiveRecord::Schema.define(:version => 20130606234747) do
 
   create_table "assigned_things", :force => true do |t|
     t.integer  "thing_id"
@@ -103,6 +103,10 @@ ActiveRecord::Schema.define(:version => 20130419005632) do
     t.float    "average_position"
     t.string   "image_url"
     t.boolean  "image_processing"
+    t.integer  "wins"
+    t.integer  "losses"
+    t.float    "win_percentage"
+    t.integer  "appearances"
   end
 
   create_table "users", :force => true do |t|

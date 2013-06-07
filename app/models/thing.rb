@@ -18,6 +18,7 @@ class Thing < ActiveRecord::Base
   has_many :users, through: :assigned_things
   has_many :taggings
   has_many :tags, through: :taggings
+  has_many :picked_matchups
   
   validates :name, presence: true, uniqueness: true
   validates_attachment_size :image, :less_than => 5.megabytes
@@ -33,6 +34,7 @@ class Thing < ActiveRecord::Base
   after_create :queue_for_twitter, if: Proc.new{ |thing| thing.creator && thing.creator.twitter_access_token.present? }
   
   after_save :download_image, if: Proc.new{ |thing| thing.image_url.present? && thing.image_url_changed? }
+  before_save :update_records
   
   after_destroy :destroy_matchups
   
@@ -57,6 +59,14 @@ class Thing < ActiveRecord::Base
   
   def matchups
     Matchup.where{ (thing_1_id == my{id}) | (thing_2_id == my{id}) }
+  end
+  
+  def raw_wins
+    picked_matchups.count
+  end
+  
+  def raw_losses
+    matchups.count - picked_matchups.count
   end
   
   def to_s
@@ -141,6 +151,13 @@ class Thing < ActiveRecord::Base
     end
   end
   
+  def update_records
+    self.wins = self.raw_wins
+    self.losses = self.raw_losses
+    self.appearances = self.matchups.count.to_f
+    self.win_percentage = self.wins.to_f/self.appearances.to_f if self.appearances > 0
+  end
+  
   def post_to_facebook(token,url)
     graph = Koala::Facebook::API.new(token)
     graph.put_connections("me", "tbtitworld:add", thing: url) rescue nil
@@ -158,6 +175,10 @@ class Thing < ActiveRecord::Base
   handle_asynchronously :post_to_twitter
   
   class << self
+    def with_sort(sort)
+      reorder{ __send__(sort[:column]).__send__(sort[:order]) }
+    end
+    
     def suggested_images(term='coffee')
       url = "https://www.google.com/search?q=#{URI.escape(term)}&hl=en&biw=1389&bih=800&tbm=isch&source=lnt&tbs=isz:ex,iszw:1200,iszh:800&sa=X&ei=6fVlUfalEpHK9gS8hoHgBA&ved=0CCwQpwUoBQ#q=#{URI.escape(term)}&hl=en&tbs=iszw:1200,iszh:800,isz:lt,islt:xga&tbm=isch&source=lnt&sa=X&ei=BvZlUcDnG4fu9ATjoIGIDw&ved=0CCIQpwU&bav=on.2,or.r_cp.r_qf.&bvm=bv.45107431,d.eWU&fp=469a30c85ca8a294&biw=1389&bih=734"
       #url = "https://www.google.com/search?q=#{URI.escape(term)}&hl=en&source=lnms&tbm=isch&sa=X&ei=BE9gUdG3HYmc9QSzmYH4Dg&ved=0CAcQ_AUoAQ&biw=1270&bih=735"

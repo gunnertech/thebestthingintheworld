@@ -27,11 +27,15 @@ class ThingsController < InheritedResources::Base
     params[:view] == 'compare' ? 1 : 100
   end
   
+  def sort
+    params[:sort] = params[:sort].present? ? params[:sort] : {column: 'win_percentage', order: 'desc'}
+  end
+  
   def collection
     return @things if @things
     
     @things = end_of_association_chain.accessible_by(current_ability).paginate(page: (params[:page].to_i == 0 ? "1" : params[:page]), :per_page => per_page)
-    
+    @things = @things.with_sort(sort) if params[:view].blank?
     @things
   end
   

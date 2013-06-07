@@ -1,8 +1,14 @@
 <%- model_class = Thing -%>
 <div class="page-header row-fluid">
   <h1 class="span8">
-    <%= resource.name %> 
-    <small>(#<%= resource.average_position %> of <%= Thing.count %> )</small>
+    <div class="span6">
+      <%= resource.name %> 
+      <small>(#<%= resource.average_position %> of <%= Thing.count %> )</small>
+    </div>
+    <div class="span6">
+      <%= number_to_percentage(100*resource.win_percentage, :precision => 1) %>
+      <small>(<%= resource.wins %> W - <%= resource.losses %> L)</small>
+    </div>
   </h1>
   <div class="span4">
     <% if parent? %>
