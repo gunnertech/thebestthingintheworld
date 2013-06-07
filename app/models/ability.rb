@@ -11,6 +11,7 @@ class Ability
       can :manage, Thing do |thing|
         thing.new_record? || thing.creator == user
       end
+      can :read, Thing
     end
     can :read, :all
   end
