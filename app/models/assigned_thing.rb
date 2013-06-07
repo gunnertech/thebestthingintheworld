@@ -114,5 +114,4 @@ class AssignedThing < ActiveRecord::Base
       blowerio['/messages'].post :to => useable_number, :message => body
     end
   end
-  handle_asynchronously :share_via_sms
 end
