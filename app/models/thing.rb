@@ -155,6 +155,11 @@ class Thing < ActiveRecord::Base
     self.wins = self.raw_wins
     self.losses = (self.raw_losses < 0 ? 0 : self.raw_losses)
     self.appearances = self.matchups.count.to_f
+    
+    if self.appearances < self.wins
+      self.wins = self.appearances
+    end
+    
     if self.appearances > 0
       self.win_percentage = self.wins.to_f/self.appearances.to_f
     else
