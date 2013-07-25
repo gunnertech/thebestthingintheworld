@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   
   skip_load_and_authorize_resource only: [:oauth, :twitter_oauth]
   skip_before_filter :set_user_id, only: [:oauth, :twitter_oauth]
+  skip_before_filter :reconnect_with_facebook, only: [:oauth, :twitter_oauth]
   
   def oauth
     @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], oauth_user_url("me"))
