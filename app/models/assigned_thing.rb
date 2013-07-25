@@ -37,6 +37,7 @@ class AssignedThing < ActiveRecord::Base
   handle_asynchronously :update_things_average_position
   
   def queue_for_facebook
+    Rails.logger.warn("^^^^^^^^^#{comparision.inspect}")
     post_to_facebook(
       user.facebook_access_token,
       Rails.application.routes.url_helpers.thing_url(thing, comparison_thing_id: comparision.try(:id), host: ENV['HOST'])
