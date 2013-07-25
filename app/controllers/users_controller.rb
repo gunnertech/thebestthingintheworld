@@ -11,6 +11,14 @@ class UsersController < ApplicationController
       @user = current_user || User.new
       @user.facebook_access_token = facebook_session["access_token"] || @oauth.get_access_token(params[:code])
       
+      new_access_info = @oauth.exchange_access_token_info @user.facebook_access_token
+      
+      new_access_token = new_access_info["access_token"]
+      new_access_expires_at = DateTime.now + new_access_info["expires"].to_i.seconds
+      
+      @user.facebook_access_token = new_access_token
+      @user.oauth_expires_at = new_access_expires_at
+      
       if @user.new_record?
         @graph = Koala::Facebook::API.new(@user.facebook_access_token)
         profile = @graph.get_object("me")
@@ -29,6 +37,8 @@ class UsersController < ApplicationController
         profile = @graph.get_object("me")
         @user.facebook_id = profile["id"]
       end
+      
+      
       
       @user.save!
       

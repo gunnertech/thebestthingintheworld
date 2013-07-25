@@ -48,4 +48,13 @@ class User < ActiveRecord::Base
     self.twitter_access_secret = nil
   end
   
+  def token_expired?(new_time = nil)
+    return true if oauth_expires_at.nil?
+    expiry = (new_time.nil? ? oauth_expires_at : Time.at(new_time))
+    return true if expiry < Time.now ## expired token, so we should quickly return
+    oauth_expires_at = expiry
+    save if changed?
+    false # token not expired. :D
+  end
+  
 end

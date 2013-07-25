@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   load_and_authorize_resource except: :index, :unless => :devise_controller?
   protect_from_forgery
   
+  before_filter :reconnect_with_facebook
+  
   prepend_before_filter :set_user_id
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -19,6 +21,15 @@ class ApplicationController < ActionController::Base
     if !devise_controller?
       redirect_to new_user_session_path and return false if !signed_in? && params[:user_id] == 'me'
       params[:user_id] = current_user.id if params[:user_id] == 'me'
+    end
+  end
+  
+  
+  def reconnect_with_facebook
+    if current_user && current_user.facebook_access_token && current_user.token_expired?
+
+    # session[:return_to] = request.env["REQUEST_URI"] unless request.env["REQUEST_URI"] == facebook_request_path
+      redirect_to(oauth_user_url("me")) and return false
     end
   end
   

@@ -39,6 +39,8 @@ class Thing < ActiveRecord::Base
   after_destroy :destroy_matchups
   
   
+  
+  
   before_image_post_process do |thing|
     if !thing.image_processing? && thing.image_changed?
       thing.image_processing = true
