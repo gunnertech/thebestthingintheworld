@@ -8,7 +8,11 @@ class UsersController < ApplicationController
   def oauth
     @oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'], oauth_user_url("me"))
     if params[:client_id].present? || params[:code].present?
-      facebook_session = @oauth.try(:get_user_info_from_cookies, cookies) || {}
+      begin
+        facebook_session = @oauth.try(:get_user_info_from_cookies, cookies) || {}
+      rescue
+        facebook_session = {}
+      end
       @user = current_user || User.new
       @user.facebook_access_token = facebook_session["access_token"] || @oauth.get_access_token(params[:code])
       
