@@ -68,6 +68,7 @@ class AssignedThing < ActiveRecord::Base
   handle_asynchronously :post_to_twitter
   
   def post_to_facebook(token,url)
+    Rails.logger.warn("^^^^^^^^^#{url}")
     graph = Koala::Facebook::API.new(token)
     graph.put_connections("me", "tbtitworld:like", thing: url) rescue nil
   end
