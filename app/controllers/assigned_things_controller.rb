@@ -53,6 +53,11 @@ class AssignedThingsController < InheritedResources::Base
 
       Matchup.set_up_for(@random_thing_1,@random_thing_2)
       Matchup.set_up_for(collection.first.try(:thing),@comparison_collection.first.try(:thing))
+      
+      if collection.limit(1).first.nil?
+        flash[:notice] = "We're populating your 'things' database. Give us a moment for crying out loud!"
+        redirect_to(root_url) and return false 
+      end
     end
     
     index!
