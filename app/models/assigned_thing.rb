@@ -8,8 +8,8 @@ class AssignedThing < ActiveRecord::Base
   acts_as_list scope: :user
   
   after_update :update_things_average_position
-  after_save :queue_for_facebook, if: Proc.new{ |assigned_thing| assigned_thing.user.facebook_access_token && assigned_thing.position_changed? && assigned_thing.position < assigned_thing.position_was }
-  after_save :queue_for_twitter, if: Proc.new{ |assigned_thing| assigned_thing.user.twitter_access_token && assigned_thing.position_changed? }
+  after_update :queue_for_facebook, if: Proc.new{ |assigned_thing| assigned_thing.user.facebook_access_token && assigned_thing.position_changed? && assigned_thing.position < assigned_thing.position_was }
+  after_update :queue_for_twitter, if: Proc.new{ |assigned_thing| assigned_thing.user.twitter_access_token && assigned_thing.position_changed? }
   
   before_validation :move_position, if: Proc.new{ |assigned_thing| assigned_thing.new_position.present? }
   before_validation :share_via_email, if: Proc.new{ |assigned_thing| assigned_thing.email_addresses.present? }
