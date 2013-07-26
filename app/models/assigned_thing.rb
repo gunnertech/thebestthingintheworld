@@ -1,6 +1,6 @@
 class AssignedThing < ActiveRecord::Base
-  belongs_to :thing, dependent: :destroy
-  belongs_to :user, dependent: :destroy
+  belongs_to :thing
+  belongs_to :user
   
   attr_accessible :thing, :user, :new_position, :comparision_id, :email_addresses, :phone_number
   attr_accessor :comparision, :new_position, :comparision_id, :email_addresses, :phone_number

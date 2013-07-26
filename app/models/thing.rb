@@ -14,7 +14,7 @@ class Thing < ActiveRecord::Base
                     :default_url => "/assets/images/:style/missing.png",
                     :url => Settings.paperclip.url
   
-  has_many :assigned_things
+  has_many :assigned_things, dependent: :destroy
   has_many :users, through: :assigned_things
   has_many :taggings
   has_many :tags, through: :taggings
