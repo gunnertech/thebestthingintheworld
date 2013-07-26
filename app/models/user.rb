@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
       group.each do |thing|
         at = AssignedThing.new(user: self, thing: thing)
         at.save
-        at.set_list_position(thing.average_position.to_i)
+        at.set_list_position(thing.average_position.to_i) if at.valid?
       end
     end
   end
