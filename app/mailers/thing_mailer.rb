@@ -3,6 +3,6 @@ class ThingMailer < ActionMailer::Base
   
   def notification_email(thing)
     @thing = thing
-    mail(bcc: User.where{ send_new_thing_notification == true }.select(:email).map(&:email), :subject => "Thing Added!")
+    mail(to: "tbtitw@gunnertech.com", bcc: User.where{ send_new_thing_notification == true }.select(:email).map(&:email), :subject => "Thing Added!")
   end
 end
