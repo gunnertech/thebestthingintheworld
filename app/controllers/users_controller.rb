@@ -49,7 +49,7 @@ class UsersController < ApplicationController
       
       sign_in @user if !signed_in?
       
-      redirect_to user_path("me"), notice: "Connected to Facebook!"
+      redirect_to root_url, notice: "Connected to Facebook!"
     else
       redirect_to @oauth.url_for_oauth_code(:permissions => "publish_stream,email,user_likes,publish_actions")
     end
